@@ -19,6 +19,6 @@ foreach ($json_obj['results'] as $result) {
 	}	
 }
 
-echo json_encode($results);
+echo '{"success":true,"results":' . json_encode($results) . '}';
 
 ?>
