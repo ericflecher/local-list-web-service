@@ -1,5 +1,8 @@
 SavedList::Application.routes.draw do
   resources :places, except: :edit
+  
+  # For catching OPTIONS and sending 200 status so that request will be resent (CORS)
+  match '*all' => 'application#cors_preflight_check', :constraints => {:method => 'OPTIONS'}
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
