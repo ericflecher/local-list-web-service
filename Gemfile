@@ -4,7 +4,10 @@ gem 'rails', '3.2.8'
 
 gem 'rails-api'
 
-gem 'sqlite3'
+group :development do
+  gem 'sqlite3'
+end
+
 gem 'pg'
 
 gem 'rack-jsonp-middleware'
