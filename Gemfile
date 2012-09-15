@@ -10,6 +10,8 @@ end
 
 gem 'pg'
 
+gem 'thin'
+
 gem 'rack-jsonp-middleware'
 
 gem 'httparty'
