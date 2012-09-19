@@ -1,5 +1,9 @@
 class PlacesController < ApplicationController
   
+  def places_create_update
+    {:name => params[:name], :ref => params[:ref], :saved => params[:saved], :come_back => params[:come_back]}
+  end
+  
   # GET /places
   # GET /places.json
   def index
@@ -29,7 +33,7 @@ class PlacesController < ApplicationController
   def create
     puts '>>> params:'
     puts params.inspect
-    @place = Place.new({:name => params[:name], :ref => params[:ref], :saved => params[:saved], :come_back => params[:come_back]})
+    @place = Place.new(places_create_update)
     puts '>>> place:'
     puts @place.inspect
 
@@ -45,7 +49,8 @@ class PlacesController < ApplicationController
   def update
     @place = Place.find(params[:id])
 
-    if @place.update_attributes(params[:place])
+    #if @place.update_attributes(params[:place])
+    if @place.update_attributes(places_create_update)
       head :no_content
     else
       render json: @place.errors, status: :unprocessable_entity
