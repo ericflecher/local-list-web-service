@@ -29,7 +29,7 @@ class PlacesController < ApplicationController
   def create
     puts '>>> params:'
     puts params.inspect
-    @place = Place.new({:name => params[:name], :ref => params[:ref]})
+    @place = Place.new({:name => params[:name], :ref => params[:ref], :saved => params[:saved], :come_back => params[:come_back]})
     puts '>>> place:'
     puts @place.inspect
 
