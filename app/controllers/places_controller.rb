@@ -1,7 +1,7 @@
 class PlacesController < ApplicationController
   
   def places_create_update
-    {:name => params[:name], :ref => params[:ref], :saved => params[:saved], :come_back => params[:come_back]}
+    {:uid => params[:uid], :name => params[:name], :ref => params[:ref], :saved => params[:saved], :come_back => params[:come_back]}
   end
   
   # GET /places
