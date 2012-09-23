@@ -90,6 +90,8 @@ class PlacesController < ApplicationController
           if a[0] == "name" || a[0] == "formatted_address" || a[0] == "vicinity"
             #puts "key: " + a[0] + " val: " + a[1]
             result_new[a[0]] = a[1]
+          elsif a[0] == "id"
+            result_new["uid"] = a[1]
           end
         end
         
