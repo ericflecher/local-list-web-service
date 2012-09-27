@@ -1,11 +1,16 @@
 SavedList::Application.routes.draw do
+
   resources :places, except: :edit
+  resources :users, except: :edit
   
   # For catching OPTIONS and sending 200 status so that request will be resent (CORS)
   match '*all' => 'application#cors_preflight_check', :constraints => {:method => 'OPTIONS'}
   
   # For geo Google Places WS
   match '/geo' => 'places#geo'
+  
+  # For creating a new unique user (if doesn't already exist)
+  match '/users/new_unique_user' => 'users#new_unique_user', :constraints => {:method => 'POST'}
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

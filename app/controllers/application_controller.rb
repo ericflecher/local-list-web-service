@@ -16,6 +16,7 @@ class ApplicationController < ActionController::API
   # For all responses in this controller, return the CORS access control headers.
 
   def cors_set_access_control_headers
+    puts '>>>>>> cors_set_access_control_headers'
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
     headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-Prototype-Version, Content-Type'
@@ -27,7 +28,9 @@ class ApplicationController < ActionController::API
   # text/plain.
 
   def cors_preflight_check
+    puts '>>>>>> cors_preflight_check'
     if request.method == :options
+      puts '>>>>>> method is options'
       headers['Access-Control-Allow-Origin'] = '*'
       headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
       headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-Prototype-Version'
