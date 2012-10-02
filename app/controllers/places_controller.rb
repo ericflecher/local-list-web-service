@@ -1,7 +1,19 @@
 class PlacesController < ApplicationController
   
   def places_create_update
-    {:uid => params[:uid], :name => params[:name], :ref => params[:ref], :saved => params[:saved], :come_back => params[:come_back]}
+    #puts '>>>>> places_create_update'
+    puts '>>>>> email'
+    puts params[:email]
+    
+    puts '>>>>> find user with email'
+    user = User.find(:email => params[:email])
+    
+    user_id = user.user_id
+    
+    puts '>>>>> user_id'
+    puts user_id
+    
+    {:user_id => user_id :uid => params[:uid], :name => params[:name], :ref => params[:ref], :saved => params[:saved], :come_back => params[:come_back]}
   end
   
   # GET /places

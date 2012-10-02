@@ -835,3 +835,21 @@ Migrating to CreateUsers (20120927010116)
   [1m[35m (0.1ms)[0m  SELECT "schema_migrations"."version" FROM "schema_migrations" 
   [1m[36m (0.0ms)[0m  [1mPRAGMA index_list("places")[0m
   [1m[35m (0.0ms)[0m  PRAGMA index_list("users")
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+  [1m[36m (0.1ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to CreatePlaces (20120904012626)
+Migrating to AddSavedToPlaces (20120919024341)
+Migrating to AddComeBackToPlaces (20120919024458)
+Migrating to AddUidToPlaces (20120923004223)
+Migrating to CreateUsers (20120927010116)
+Migrating to AddUserIdToPlaces (20121002040049)
+  [1m[35m (0.0ms)[0m  select sqlite_version(*)
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (34.7ms)[0m  ALTER TABLE "places" ADD "user_id" integer
+  [1m[36m (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('20121002040049')[0m
+  [1m[35m (2.5ms)[0m  commit transaction
+  [1m[36m (0.3ms)[0m  [1mselect sqlite_version(*)[0m
+  [1m[35m (0.2ms)[0m  SELECT "schema_migrations"."version" FROM "schema_migrations" 
+  [1m[36m (0.0ms)[0m  [1mPRAGMA index_list("places")[0m
+  [1m[35m (0.0ms)[0m  PRAGMA index_list("users")
