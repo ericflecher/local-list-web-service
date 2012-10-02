@@ -6,7 +6,7 @@ class PlacesController < ApplicationController
     puts params[:email]
     
     puts '>>>>> find user with email'
-    user = User.find(:email => params[:email])
+    user = User.find_by_email(params[:email])
     
     user_id = user.user_id
     
