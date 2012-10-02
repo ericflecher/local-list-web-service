@@ -5,15 +5,19 @@ class PlacesController < ApplicationController
     puts '>>>>> email'
     puts params[:email]
     
-    puts '>>>>> find user with email'
-    user = User.find_by_email(params[:email])
-    
-    user_id = user.user_id
-    
-    puts '>>>>> user_id'
-    puts user_id
-    
-    {:user_id => user_id, :uid => params[:uid], :name => params[:name], :ref => params[:ref], :saved => params[:saved], :come_back => params[:come_back]}
+    if params[:email]
+      puts '>>>>> find user (or create) by email'
+      user = User.find_or_create_by_email(params[:email])
+      puts '>>>>> user'
+      puts user.inspect
+      
+      user_id = user.user_id
+      
+      puts '>>>>> user_id'
+      puts user_id
+      
+      {:user_id => user_id, :uid => params[:uid], :name => params[:name], :ref => params[:ref], :saved => params[:saved], :come_back => params[:come_back]}
+    end
   end
   
   # GET /places
