@@ -13,7 +13,7 @@ class PlacesController < ApplicationController
     puts '>>>>> user_id'
     puts user_id
     
-    {:user_id => user_id :uid => params[:uid], :name => params[:name], :ref => params[:ref], :saved => params[:saved], :come_back => params[:come_back]}
+    {:user_id => user_id, :uid => params[:uid], :name => params[:name], :ref => params[:ref], :saved => params[:saved], :come_back => params[:come_back]}
   end
   
   # GET /places
