@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121002040049) do
+ActiveRecord::Schema.define(:version => 20121003001023) do
 
   create_table "places", :force => true do |t|
     t.string   "name"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(:version => 20121002040049) do
     t.boolean  "come_back"
     t.string   "uid"
     t.integer  "user_id"
+    t.boolean  "archived"
   end
 
   create_table "users", :force => true do |t|

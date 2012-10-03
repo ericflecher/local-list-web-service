@@ -23,7 +23,16 @@ class PlacesController < ApplicationController
   # GET /places
   # GET /places.json
   def index
-    @places = Place.all
+    puts '>>> index'
+    puts '>>> params[:archived]'
+    puts params[:archived]
+    
+    if params.has_key?(:archived) && params[:archived] == true
+      puts '>>> archived is true'
+      @places = Place.all
+    else
+      @places = Place.where('archived != ?', true)
+    end
     
     render json: @places
   end
@@ -76,8 +85,19 @@ class PlacesController < ApplicationController
   # DELETE /places/1
   # DELETE /places/1.json
   def destroy
+    puts '>>> index'
     @place = Place.find(params[:id])
-    @place.destroy
+    
+    puts '>>> params[:permanent]'
+    puts params[:permanent]
+    
+    if params.has_key?(:permanent) && params[:permanent] == true
+      puts '>>> permanent is true'
+      @place.destroy
+    else
+      @place.archived = true
+      @place.save
+    end
 
     head :no_content
   end
