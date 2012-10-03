@@ -31,11 +31,12 @@ class PlacesController < ApplicationController
     puts '>>> params[:archived]'
     puts params[:archived]
     
-    if params.has_key?(:archived) && params[:archived] == true
+    if params.has_key?(:archived) && params[:archived] == 'true'
       puts '>>> archived is true'
       @places = Place.all
     else
-      @places = Place.where('archived != ?', true)
+      puts '>>> archived is not true, display only archived != true'
+      @places = Place.where('archived != ? OR archived IS NULL', true)
     end
     
     render json: @places
@@ -95,7 +96,7 @@ class PlacesController < ApplicationController
     puts '>>> params[:permanent]'
     puts params[:permanent]
     
-    if params.has_key?(:permanent) && params[:permanent] == true
+    if params.has_key?(:permanent) && params[:permanent] == 'true'
       puts '>>> permanent is true'
       @place.destroy
     else

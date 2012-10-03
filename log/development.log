@@ -872,3 +872,419 @@ Migrating to AddArchivedToPlaces (20121003001023)
   [1m[35m (0.1ms)[0m  SELECT "schema_migrations"."version" FROM "schema_migrations" 
   [1m[36m (0.0ms)[0m  [1mPRAGMA index_list("places")[0m
   [1m[35m (0.0ms)[0m  PRAGMA index_list("users")
+Connecting to database specified by database.yml
+  [1m[36m (0.1ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to CreatePlaces (20120904012626)
+Migrating to AddSavedToPlaces (20120919024341)
+Migrating to AddComeBackToPlaces (20120919024458)
+Migrating to AddUidToPlaces (20120923004223)
+Migrating to CreateUsers (20120927010116)
+Migrating to AddUserIdToPlaces (20121002040049)
+Migrating to AddArchivedToPlaces (20121003001023)
+  [1m[35m (0.2ms)[0m  select sqlite_version(*)
+  [1m[36m (0.1ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+  [1m[35m (0.0ms)[0m  PRAGMA index_list("places")
+  [1m[36m (0.0ms)[0m  [1mPRAGMA index_list("users")[0m
+
+
+Started GET "/places" for 127.0.0.1 at 2012-10-02 19:52:47 -0500
+Connecting to database specified by database.yml
+Processing by PlacesController#index as HTML
+  [1m[36mPlace Load (0.1ms)[0m  [1mSELECT "places".* FROM "places" WHERE (archived != 't')[0m
+Completed 200 OK in 66ms (Views: 2.0ms | ActiveRecord: 4.8ms)
+
+
+Started GET "/places/new" for 127.0.0.1 at 2012-10-02 19:57:11 -0500
+Processing by PlacesController#new as HTML
+Completed 200 OK in 29ms (Views: 0.4ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/places/new" for 127.0.0.1 at 2012-10-02 19:57:13 -0500
+Processing by PlacesController#new as HTML
+Completed 200 OK in 1ms (Views: 0.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/places/new" for 127.0.0.1 at 2012-10-02 19:57:14 -0500
+Processing by PlacesController#new as HTML
+Completed 200 OK in 1ms (Views: 0.6ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/places" for 127.0.0.1 at 2012-10-02 19:57:17 -0500
+Processing by PlacesController#index as HTML
+  [1m[35mPlace Load (0.2ms)[0m  SELECT "places".* FROM "places" WHERE (archived != 't')
+Completed 200 OK in 2ms (Views: 0.9ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/places?archived=false" for 127.0.0.1 at 2012-10-02 19:57:24 -0500
+Processing by PlacesController#index as HTML
+  Parameters: {"archived"=>"false"}
+  [1m[36mPlace Load (0.2ms)[0m  [1mSELECT "places".* FROM "places" WHERE (archived != 't')[0m
+Completed 200 OK in 1ms (Views: 0.5ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/places?archived=true" for 127.0.0.1 at 2012-10-02 19:57:27 -0500
+Processing by PlacesController#index as HTML
+  Parameters: {"archived"=>"true"}
+  [1m[35mPlace Load (0.2ms)[0m  SELECT "places".* FROM "places" WHERE (archived != 't')
+Completed 200 OK in 1ms (Views: 0.5ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/places" for 127.0.0.1 at 2012-10-02 19:57:32 -0500
+Processing by PlacesController#index as HTML
+  [1m[36mPlace Load (0.2ms)[0m  [1mSELECT "places".* FROM "places" WHERE (archived != 't')[0m
+Completed 200 OK in 1ms (Views: 0.5ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/places" for 127.0.0.1 at 2012-10-02 19:58:21 -0500
+Processing by PlacesController#index as HTML
+Completed 500 Internal Server Error in 3ms
+
+NameError (undefined local variable or method `frue' for #<PlacesController:0x007f8cdd09cf10>):
+  app/controllers/places_controller.rb:39:in `index'
+
+
+  Rendered /Users/nesta/.rvm/gems/ruby-1.9.2-p290@refinery/gems/actionpack-3.2.8/lib/action_dispatch/middleware/templates/rescues/_trace.erb (1.3ms)
+  Rendered /Users/nesta/.rvm/gems/ruby-1.9.2-p290@refinery/gems/actionpack-3.2.8/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (0.9ms)
+  Rendered /Users/nesta/.rvm/gems/ruby-1.9.2-p290@refinery/gems/actionpack-3.2.8/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (30.6ms)
+
+
+Started GET "/places" for 127.0.0.1 at 2012-10-02 19:58:34 -0500
+Processing by PlacesController#index as HTML
+  [1m[35mPlace Load (0.1ms)[0m  SELECT "places".* FROM "places" WHERE (archived != 'f')
+Completed 200 OK in 4ms (Views: 1.0ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/places" for 127.0.0.1 at 2012-10-02 19:59:20 -0500
+Processing by PlacesController#index as HTML
+  [1m[36mPlace Load (0.1ms)[0m  [1mSELECT "places".* FROM "places" [0m
+Completed 200 OK in 5ms (Views: 0.1ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/places/new" for 127.0.0.1 at 2012-10-02 19:59:39 -0500
+Processing by PlacesController#new as HTML
+Completed 200 OK in 10ms (Views: 0.4ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/" for 127.0.0.1 at 2012-10-02 20:02:30 -0500
+
+ActionController::RoutingError (No route matches [POST] "/"):
+  actionpack (3.2.8) lib/action_dispatch/middleware/debug_exceptions.rb:21:in `call'
+  actionpack (3.2.8) lib/action_dispatch/middleware/show_exceptions.rb:56:in `call'
+  railties (3.2.8) lib/rails/rack/logger.rb:26:in `call_app'
+  railties (3.2.8) lib/rails/rack/logger.rb:16:in `call'
+  actionpack (3.2.8) lib/action_dispatch/middleware/request_id.rb:22:in `call'
+  rack (1.4.1) lib/rack/runtime.rb:17:in `call'
+  activesupport (3.2.8) lib/active_support/cache/strategy/local_cache.rb:72:in `call'
+  rack (1.4.1) lib/rack/lock.rb:15:in `call'
+  actionpack (3.2.8) lib/action_dispatch/middleware/static.rb:62:in `call'
+  railties (3.2.8) lib/rails/engine.rb:479:in `call'
+  railties (3.2.8) lib/rails/application.rb:223:in `call'
+  rack (1.4.1) lib/rack/content_length.rb:14:in `call'
+  railties (3.2.8) lib/rails/rack/log_tailer.rb:17:in `call'
+  thin (1.4.1) lib/thin/connection.rb:80:in `block in pre_process'
+  thin (1.4.1) lib/thin/connection.rb:78:in `catch'
+  thin (1.4.1) lib/thin/connection.rb:78:in `pre_process'
+  thin (1.4.1) lib/thin/connection.rb:53:in `process'
+  thin (1.4.1) lib/thin/connection.rb:38:in `receive_data'
+  eventmachine (1.0.0) lib/eventmachine.rb:187:in `run_machine'
+  eventmachine (1.0.0) lib/eventmachine.rb:187:in `run'
+  thin (1.4.1) lib/thin/backends/base.rb:63:in `start'
+  thin (1.4.1) lib/thin/server.rb:159:in `start'
+  rack (1.4.1) lib/rack/handler/thin.rb:13:in `run'
+  rack (1.4.1) lib/rack/server.rb:265:in `start'
+  railties (3.2.8) lib/rails/commands/server.rb:70:in `start'
+  railties (3.2.8) lib/rails/commands.rb:55:in `block in <top (required)>'
+  railties (3.2.8) lib/rails/commands.rb:50:in `tap'
+  railties (3.2.8) lib/rails/commands.rb:50:in `<top (required)>'
+  script/rails:6:in `require'
+  script/rails:6:in `<main>'
+
+
+  Rendered /Users/nesta/.rvm/gems/ruby-1.9.2-p290@refinery/gems/actionpack-3.2.8/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (1.3ms)
+
+
+Started POST "/places" for 127.0.0.1 at 2012-10-02 20:02:51 -0500
+Processing by PlacesController#create as */*
+  Parameters: {"archived"=>nil, "come_back"=>nil, "created_at"=>nil, "id"=>nil, "name"=>nil, "ref"=>nil, "saved"=>nil, "uid"=>nil, "updated_at"=>nil, "user_id"=>nil}
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (46.2ms)[0m  [1mINSERT INTO "places" ("archived", "come_back", "created_at", "name", "ref", "saved", "uid", "updated_at", "user_id") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["archived", nil], ["come_back", nil], ["created_at", Wed, 03 Oct 2012 01:02:51 UTC +00:00], ["name", nil], ["ref", nil], ["saved", nil], ["uid", nil], ["updated_at", Wed, 03 Oct 2012 01:02:51 UTC +00:00], ["user_id", nil]]
+  [1m[35m (2.0ms)[0m  commit transaction
+Completed 201 Created in 53ms (Views: 1.5ms | ActiveRecord: 48.3ms)
+
+
+Started GET "/places" for 127.0.0.1 at 2012-10-02 20:03:07 -0500
+Processing by PlacesController#index as HTML
+  [1m[36mPlace Load (0.3ms)[0m  [1mSELECT "places".* FROM "places" [0m
+Completed 200 OK in 2ms (Views: 0.9ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/places" for 127.0.0.1 at 2012-10-02 20:03:10 -0500
+Processing by PlacesController#index as HTML
+  [1m[35mPlace Load (0.2ms)[0m  SELECT "places".* FROM "places" 
+Completed 200 OK in 2ms (Views: 0.8ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/places?archived=true" for 127.0.0.1 at 2012-10-02 20:03:17 -0500
+Processing by PlacesController#index as HTML
+  Parameters: {"archived"=>"true"}
+  [1m[36mPlace Load (0.2ms)[0m  [1mSELECT "places".* FROM "places" [0m
+Completed 200 OK in 2ms (Views: 0.7ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/places" for 127.0.0.1 at 2012-10-02 20:03:34 -0500
+Processing by PlacesController#create as */*
+  Parameters: {"archived"=>true, "come_back"=>nil, "created_at"=>nil, "id"=>nil, "name"=>nil, "ref"=>nil, "saved"=>nil, "uid"=>nil, "updated_at"=>nil, "user_id"=>nil}
+  [1m[35m (0.2ms)[0m  begin transaction
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "places" ("archived", "come_back", "created_at", "name", "ref", "saved", "uid", "updated_at", "user_id") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["archived", nil], ["come_back", nil], ["created_at", Wed, 03 Oct 2012 01:03:34 UTC +00:00], ["name", nil], ["ref", nil], ["saved", nil], ["uid", nil], ["updated_at", Wed, 03 Oct 2012 01:03:34 UTC +00:00], ["user_id", nil]]
+  [1m[35m (18.9ms)[0m  commit transaction
+Completed 201 Created in 23ms (Views: 0.8ms | ActiveRecord: 19.6ms)
+
+
+Started GET "/places?archived=true" for 127.0.0.1 at 2012-10-02 20:03:38 -0500
+Processing by PlacesController#index as HTML
+  Parameters: {"archived"=>"true"}
+  [1m[36mPlace Load (0.3ms)[0m  [1mSELECT "places".* FROM "places" [0m
+Completed 200 OK in 3ms (Views: 1.2ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/places?archived=false" for 127.0.0.1 at 2012-10-02 20:03:42 -0500
+Processing by PlacesController#index as HTML
+  Parameters: {"archived"=>"false"}
+  [1m[35mPlace Load (0.2ms)[0m  SELECT "places".* FROM "places" 
+Completed 200 OK in 3ms (Views: 1.4ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/places?archived=false" for 127.0.0.1 at 2012-10-02 20:03:44 -0500
+Processing by PlacesController#index as HTML
+  Parameters: {"archived"=>"false"}
+  [1m[36mPlace Load (0.2ms)[0m  [1mSELECT "places".* FROM "places" [0m
+Completed 200 OK in 2ms (Views: 1.2ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/places" for 127.0.0.1 at 2012-10-02 20:03:47 -0500
+Processing by PlacesController#index as HTML
+  [1m[35mPlace Load (0.2ms)[0m  SELECT "places".* FROM "places" 
+Completed 200 OK in 1ms (Views: 0.6ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/places" for 127.0.0.1 at 2012-10-02 20:03:49 -0500
+Processing by PlacesController#index as HTML
+  [1m[36mPlace Load (0.3ms)[0m  [1mSELECT "places".* FROM "places" [0m
+Completed 200 OK in 3ms (Views: 1.3ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/places" for 127.0.0.1 at 2012-10-02 20:03:58 -0500
+Processing by PlacesController#index as HTML
+  [1m[35mPlace Load (0.1ms)[0m  SELECT "places".* FROM "places" WHERE (archived != 't')
+Completed 200 OK in 5ms (Views: 0.9ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/places?archived=false" for 127.0.0.1 at 2012-10-02 20:04:04 -0500
+Processing by PlacesController#index as HTML
+  Parameters: {"archived"=>"false"}
+  [1m[36mPlace Load (0.2ms)[0m  [1mSELECT "places".* FROM "places" WHERE (archived != 't')[0m
+Completed 200 OK in 1ms (Views: 0.6ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/places?archived=false" for 127.0.0.1 at 2012-10-02 20:04:05 -0500
+Processing by PlacesController#index as HTML
+  Parameters: {"archived"=>"false"}
+  [1m[35mPlace Load (0.2ms)[0m  SELECT "places".* FROM "places" WHERE (archived != 't')
+Completed 200 OK in 1ms (Views: 0.5ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/places?archived=true" for 127.0.0.1 at 2012-10-02 20:04:09 -0500
+Processing by PlacesController#index as HTML
+  Parameters: {"archived"=>"true"}
+  [1m[36mPlace Load (0.2ms)[0m  [1mSELECT "places".* FROM "places" WHERE (archived != 't')[0m
+Completed 200 OK in 2ms (Views: 0.6ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/places?archived=true" for 127.0.0.1 at 2012-10-02 20:04:10 -0500
+Processing by PlacesController#index as HTML
+  Parameters: {"archived"=>"true"}
+  [1m[35mPlace Load (0.2ms)[0m  SELECT "places".* FROM "places" WHERE (archived != 't')
+Completed 200 OK in 1ms (Views: 0.6ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/places?archived=true" for 127.0.0.1 at 2012-10-02 20:04:32 -0500
+Processing by PlacesController#index as HTML
+  Parameters: {"archived"=>"true"}
+  [1m[36mPlace Load (0.1ms)[0m  [1mSELECT "places".* FROM "places" [0m
+Completed 200 OK in 13ms (Views: 0.7ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/places?archived=false" for 127.0.0.1 at 2012-10-02 20:04:37 -0500
+Processing by PlacesController#index as HTML
+  Parameters: {"archived"=>"false"}
+  [1m[35mPlace Load (0.2ms)[0m  SELECT "places".* FROM "places" WHERE (archived != 't')
+Completed 200 OK in 2ms (Views: 0.8ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/places?archived=true" for 127.0.0.1 at 2012-10-02 20:04:40 -0500
+Processing by PlacesController#index as HTML
+  Parameters: {"archived"=>"true"}
+  [1m[36mPlace Load (0.2ms)[0m  [1mSELECT "places".* FROM "places" [0m
+Completed 200 OK in 2ms (Views: 0.7ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/places" for 127.0.0.1 at 2012-10-02 20:04:43 -0500
+Processing by PlacesController#index as HTML
+  [1m[35mPlace Load (0.1ms)[0m  SELECT "places".* FROM "places" WHERE (archived != 't')
+Completed 200 OK in 1ms (Views: 0.4ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/places" for 127.0.0.1 at 2012-10-02 20:05:18 -0500
+Processing by PlacesController#index as HTML
+  [1m[36mPlace Load (0.1ms)[0m  [1mSELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)[0m
+Completed 200 OK in 12ms (Views: 8.7ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/places?archived=true" for 127.0.0.1 at 2012-10-02 20:05:28 -0500
+Processing by PlacesController#index as HTML
+  Parameters: {"archived"=>"true"}
+  [1m[35mPlace Load (0.3ms)[0m  SELECT "places".* FROM "places" 
+Completed 200 OK in 3ms (Views: 1.2ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/places?archived=true" for 127.0.0.1 at 2012-10-02 20:05:29 -0500
+Processing by PlacesController#index as HTML
+  Parameters: {"archived"=>"true"}
+  [1m[36mPlace Load (0.3ms)[0m  [1mSELECT "places".* FROM "places" [0m
+Completed 200 OK in 3ms (Views: 1.0ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/places" for 127.0.0.1 at 2012-10-02 20:05:53 -0500
+Processing by PlacesController#create as */*
+  Parameters: {"archived"=>"true", "come_back"=>nil, "created_at"=>nil, "id"=>nil, "name"=>nil, "ref"=>nil, "saved"=>nil, "uid"=>nil, "updated_at"=>nil, "user_id"=>nil}
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO "places" ("archived", "come_back", "created_at", "name", "ref", "saved", "uid", "updated_at", "user_id") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["archived", nil], ["come_back", nil], ["created_at", Wed, 03 Oct 2012 01:05:53 UTC +00:00], ["name", nil], ["ref", nil], ["saved", nil], ["uid", nil], ["updated_at", Wed, 03 Oct 2012 01:05:53 UTC +00:00], ["user_id", nil]]
+  [1m[35m (2.6ms)[0m  commit transaction
+Completed 201 Created in 9ms (Views: 1.6ms | ActiveRecord: 3.3ms)
+
+
+Started GET "/places?archived=true" for 127.0.0.1 at 2012-10-02 20:07:47 -0500
+Processing by PlacesController#index as HTML
+  Parameters: {"archived"=>"true"}
+  [1m[36mPlace Load (0.1ms)[0m  [1mSELECT "places".* FROM "places" [0m
+Completed 200 OK in 36ms (Views: 1.1ms | ActiveRecord: 0.5ms)
+
+
+Started DELETE "/places" for 127.0.0.1 at 2012-10-02 20:08:40 -0500
+Error occurred while parsing request parameters.
+Contents:
+
+
+
+REXML::ParseException (The document "id=2" does not have a valid root):
+  activesupport (3.2.8) lib/active_support/xml_mini/rexml.rb:35:in `parse'
+  activesupport (3.2.8) lib/active_support/xml_mini.rb:80:in `parse'
+  activesupport (3.2.8) lib/active_support/core_ext/hash/conversions.rb:90:in `from_xml'
+  actionpack (3.2.8) lib/action_dispatch/middleware/params_parser.rb:41:in `parse_formatted_parameters'
+  actionpack (3.2.8) lib/action_dispatch/middleware/params_parser.rb:17:in `call'
+  activerecord (3.2.8) lib/active_record/query_cache.rb:64:in `call'
+  activerecord (3.2.8) lib/active_record/connection_adapters/abstract/connection_pool.rb:473:in `call'
+  actionpack (3.2.8) lib/action_dispatch/middleware/callbacks.rb:28:in `block in call'
+  activesupport (3.2.8) lib/active_support/callbacks.rb:405:in `_run__508421903543951202__call__2266840906063615930__callbacks'
+  activesupport (3.2.8) lib/active_support/callbacks.rb:405:in `__run_callback'
+  activesupport (3.2.8) lib/active_support/callbacks.rb:385:in `_run_call_callbacks'
+  activesupport (3.2.8) lib/active_support/callbacks.rb:81:in `run_callbacks'
+  actionpack (3.2.8) lib/action_dispatch/middleware/callbacks.rb:27:in `call'
+  actionpack (3.2.8) lib/action_dispatch/middleware/reloader.rb:65:in `call'
+  actionpack (3.2.8) lib/action_dispatch/middleware/remote_ip.rb:31:in `call'
+  actionpack (3.2.8) lib/action_dispatch/middleware/debug_exceptions.rb:16:in `call'
+  actionpack (3.2.8) lib/action_dispatch/middleware/show_exceptions.rb:56:in `call'
+  railties (3.2.8) lib/rails/rack/logger.rb:26:in `call_app'
+  railties (3.2.8) lib/rails/rack/logger.rb:16:in `call'
+  actionpack (3.2.8) lib/action_dispatch/middleware/request_id.rb:22:in `call'
+  rack (1.4.1) lib/rack/runtime.rb:17:in `call'
+  activesupport (3.2.8) lib/active_support/cache/strategy/local_cache.rb:72:in `call'
+  rack (1.4.1) lib/rack/lock.rb:15:in `call'
+  actionpack (3.2.8) lib/action_dispatch/middleware/static.rb:62:in `call'
+  railties (3.2.8) lib/rails/engine.rb:479:in `call'
+  railties (3.2.8) lib/rails/application.rb:223:in `call'
+  rack (1.4.1) lib/rack/content_length.rb:14:in `call'
+  railties (3.2.8) lib/rails/rack/log_tailer.rb:17:in `call'
+  thin (1.4.1) lib/thin/connection.rb:80:in `block in pre_process'
+  thin (1.4.1) lib/thin/connection.rb:78:in `catch'
+  thin (1.4.1) lib/thin/connection.rb:78:in `pre_process'
+  thin (1.4.1) lib/thin/connection.rb:53:in `process'
+  thin (1.4.1) lib/thin/connection.rb:38:in `receive_data'
+  eventmachine (1.0.0) lib/eventmachine.rb:187:in `run_machine'
+  eventmachine (1.0.0) lib/eventmachine.rb:187:in `run'
+  thin (1.4.1) lib/thin/backends/base.rb:63:in `start'
+  thin (1.4.1) lib/thin/server.rb:159:in `start'
+  rack (1.4.1) lib/rack/handler/thin.rb:13:in `run'
+  rack (1.4.1) lib/rack/server.rb:265:in `start'
+  railties (3.2.8) lib/rails/commands/server.rb:70:in `start'
+  railties (3.2.8) lib/rails/commands.rb:55:in `block in <top (required)>'
+  railties (3.2.8) lib/rails/commands.rb:50:in `tap'
+  railties (3.2.8) lib/rails/commands.rb:50:in `<top (required)>'
+  script/rails:6:in `require'
+  script/rails:6:in `<main>'
+
+
+  Rendered /Users/nesta/.rvm/gems/ruby-1.9.2-p290@refinery/gems/actionpack-3.2.8/lib/action_dispatch/middleware/templates/rescues/_trace.erb (0.9ms)
+  Rendered /Users/nesta/.rvm/gems/ruby-1.9.2-p290@refinery/gems/actionpack-3.2.8/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (0.8ms)
+  Rendered /Users/nesta/.rvm/gems/ruby-1.9.2-p290@refinery/gems/actionpack-3.2.8/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (6.1ms)
+
+
+Started DELETE "/places" for 127.0.0.1 at 2012-10-02 20:11:32 -0500
+
+ActionController::RoutingError (No route matches [DELETE] "/places"):
+  actionpack (3.2.8) lib/action_dispatch/middleware/debug_exceptions.rb:21:in `call'
+  actionpack (3.2.8) lib/action_dispatch/middleware/show_exceptions.rb:56:in `call'
+  railties (3.2.8) lib/rails/rack/logger.rb:26:in `call_app'
+  railties (3.2.8) lib/rails/rack/logger.rb:16:in `call'
+  actionpack (3.2.8) lib/action_dispatch/middleware/request_id.rb:22:in `call'
+  rack (1.4.1) lib/rack/runtime.rb:17:in `call'
+  activesupport (3.2.8) lib/active_support/cache/strategy/local_cache.rb:72:in `call'
+  rack (1.4.1) lib/rack/lock.rb:15:in `call'
+  actionpack (3.2.8) lib/action_dispatch/middleware/static.rb:62:in `call'
+  railties (3.2.8) lib/rails/engine.rb:479:in `call'
+  railties (3.2.8) lib/rails/application.rb:223:in `call'
+  rack (1.4.1) lib/rack/content_length.rb:14:in `call'
+  railties (3.2.8) lib/rails/rack/log_tailer.rb:17:in `call'
+  thin (1.4.1) lib/thin/connection.rb:80:in `block in pre_process'
+  thin (1.4.1) lib/thin/connection.rb:78:in `catch'
+  thin (1.4.1) lib/thin/connection.rb:78:in `pre_process'
+  thin (1.4.1) lib/thin/connection.rb:53:in `process'
+  thin (1.4.1) lib/thin/connection.rb:38:in `receive_data'
+  eventmachine (1.0.0) lib/eventmachine.rb:187:in `run_machine'
+  eventmachine (1.0.0) lib/eventmachine.rb:187:in `run'
+  thin (1.4.1) lib/thin/backends/base.rb:63:in `start'
+  thin (1.4.1) lib/thin/server.rb:159:in `start'
+  rack (1.4.1) lib/rack/handler/thin.rb:13:in `run'
+  rack (1.4.1) lib/rack/server.rb:265:in `start'
+  railties (3.2.8) lib/rails/commands/server.rb:70:in `start'
+  railties (3.2.8) lib/rails/commands.rb:55:in `block in <top (required)>'
+  railties (3.2.8) lib/rails/commands.rb:50:in `tap'
+  railties (3.2.8) lib/rails/commands.rb:50:in `<top (required)>'
+  script/rails:6:in `require'
+  script/rails:6:in `<main>'
+
+
+  Rendered /Users/nesta/.rvm/gems/ruby-1.9.2-p290@refinery/gems/actionpack-3.2.8/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.6ms)
+
+
+Started DELETE "/places/2" for 127.0.0.1 at 2012-10-02 20:12:04 -0500
+Processing by PlacesController#destroy as */*
+  Parameters: {"id"=>"2"}
+  [1m[35mPlace Load (0.2ms)[0m  SELECT "places".* FROM "places" WHERE "places"."id" = ? LIMIT 1  [["id", "2"]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  UPDATE "places" SET "archived" = 't', "updated_at" = '2012-10-03 01:12:04.133379' WHERE "places"."id" = 2
+  [1m[36m (2.5ms)[0m  [1mcommit transaction[0m
+Completed 204 No Content in 8ms (ActiveRecord: 3.1ms)
+
+
+Started GET "/places?archived=true" for 127.0.0.1 at 2012-10-02 20:12:13 -0500
+Processing by PlacesController#index as HTML
+  Parameters: {"archived"=>"true"}
+  [1m[35mPlace Load (0.3ms)[0m  SELECT "places".* FROM "places" 
+Completed 200 OK in 3ms (Views: 1.4ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/places" for 127.0.0.1 at 2012-10-02 20:12:20 -0500
+Processing by PlacesController#index as HTML
+  [1m[36mPlace Load (0.2ms)[0m  [1mSELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)[0m
+Completed 200 OK in 2ms (Views: 1.1ms | ActiveRecord: 0.2ms)
