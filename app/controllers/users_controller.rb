@@ -66,8 +66,30 @@ class UsersController < ApplicationController
   def new_unique_user
     puts '>>> params:'
     puts params.inspect
-    @user = User.find_or_create_by_email(params[:user][:email])
+    user = User.find_or_initialize_by_email(params[:user][:email])
+    puts '>>> created?'
+    puts user.new_record?
+
+    if user.new_record?
+      created = true
+      
+      if user.save
+        success = true
+      else
+        success = false
+      end
+    else
+      created = false
+      success = true
+    end
+    
+    response = { :success => success, :created => created, :user_id => user.id }
+    
     puts '>>> User:'
-    puts @user.inspect
+    puts user.inspect
+    puts '>>> response'
+    puts response.inspect
+    
+    render json: response
   end
 end

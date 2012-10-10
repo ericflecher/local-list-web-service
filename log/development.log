@@ -1288,3 +1288,695 @@ Started GET "/places" for 127.0.0.1 at 2012-10-02 20:12:20 -0500
 Processing by PlacesController#index as HTML
   [1m[36mPlace Load (0.2ms)[0m  [1mSELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)[0m
 Completed 200 OK in 2ms (Views: 1.1ms | ActiveRecord: 0.2ms)
+
+
+Started OPTIONS "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 20:53:03 -0500
+Connecting to database specified by database.yml
+Processing by ApplicationController#cors_preflight_check as */*
+  Parameters: {"all"=>"users/new_unique_user"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 20:53:03 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"mswiebod@gmail.com"}}
+Completed 500 Internal Server Error in 44ms
+
+ActiveRecord::StatementInvalid (Could not find table 'users'):
+  app/controllers/users_controller.rb:69:in `new_unique_user'
+
+
+  Rendered /Users/mswieboda/.rvm/gems/ruby-1.9.3-p194/gems/actionpack-3.2.8/lib/action_dispatch/middleware/templates/rescues/_trace.erb (2.1ms)
+  Rendered /Users/mswieboda/.rvm/gems/ruby-1.9.3-p194/gems/actionpack-3.2.8/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (1.2ms)
+  Rendered /Users/mswieboda/.rvm/gems/ruby-1.9.3-p194/gems/actionpack-3.2.8/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (14.5ms)
+Connecting to database specified by database.yml
+  [1m[36m (0.1ms)[0m  [1mselect sqlite_version(*)[0m
+  [1m[35m (2.0ms)[0m  CREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) 
+  [1m[36m (0.1ms)[0m  [1mPRAGMA index_list("schema_migrations")[0m
+  [1m[35m (1.1ms)[0m  CREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")
+  [1m[36m (0.2ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to CreatePlaces (20120904012626)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mCREATE TABLE "places" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "ref" varchar(255), "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('20120904012626')
+  [1m[36m (1.1ms)[0m  [1mcommit transaction[0m
+Migrating to AddSavedToPlaces (20120919024341)
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "places" ADD "saved" boolean[0m
+  [1m[35m (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('20120919024341')
+  [1m[36m (0.8ms)[0m  [1mcommit transaction[0m
+Migrating to AddComeBackToPlaces (20120919024458)
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "places" ADD "come_back" boolean[0m
+  [1m[35m (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('20120919024458')
+  [1m[36m (0.8ms)[0m  [1mcommit transaction[0m
+Migrating to AddUidToPlaces (20120923004223)
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "places" ADD "uid" varchar(255)[0m
+  [1m[35m (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('20120923004223')
+  [1m[36m (0.9ms)[0m  [1mcommit transaction[0m
+Migrating to CreateUsers (20120927010116)
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.3ms)[0m  [1mCREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar(255), "token" varchar(255), "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('20120927010116')
+  [1m[36m (1.1ms)[0m  [1mcommit transaction[0m
+Migrating to AddUserIdToPlaces (20121002040049)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "places" ADD "user_id" integer[0m
+  [1m[35m (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('20121002040049')
+  [1m[36m (1.0ms)[0m  [1mcommit transaction[0m
+Migrating to AddArchivedToPlaces (20121003001023)
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "places" ADD "archived" boolean[0m
+  [1m[35m (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('20121003001023')
+  [1m[36m (1.1ms)[0m  [1mcommit transaction[0m
+  [1m[35m (0.2ms)[0m  select sqlite_version(*)
+  [1m[36m (0.1ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+  [1m[35m (0.0ms)[0m  PRAGMA index_list("places")
+  [1m[36m (0.0ms)[0m  [1mPRAGMA index_list("users")[0m
+  [1m[35m (0.2ms)[0m  select sqlite_version(*)
+  [1m[36m (1.5ms)[0m  [1mDROP TABLE "places"[0m
+  [1m[35m (1.2ms)[0m  CREATE TABLE "places" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "ref" varchar(255), "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "saved" boolean, "come_back" boolean, "uid" varchar(255), "user_id" integer, "archived" boolean) 
+  [1m[36m (1.6ms)[0m  [1mDROP TABLE "users"[0m
+  [1m[35m (1.3ms)[0m  CREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar(255), "token" varchar(255), "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.1ms)[0m  [1mSELECT version FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  SELECT "schema_migrations"."version" FROM "schema_migrations" 
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 20:54:07 -0500
+Connecting to database specified by database.yml
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"mswiebod@gmail.com"}}
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = 'mswiebod@gmail.com' LIMIT 1[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mSQL (40.1ms)[0m  [1mINSERT INTO "users" ("created_at", "email", "token", "updated_at") VALUES (?, ?, ?, ?)[0m  [["created_at", Wed, 10 Oct 2012 01:54:07 UTC +00:00], ["email", "mswiebod@gmail.com"], ["token", nil], ["updated_at", Wed, 10 Oct 2012 01:54:07 UTC +00:00]]
+  [1m[35m (1.4ms)[0m  commit transaction
+Completed 200 OK in 100ms (ActiveRecord: 43.1ms)
+
+
+Started GET "/users" for 127.0.0.1 at 2012-10-09 20:54:20 -0500
+Processing by UsersController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" [0m
+Completed 200 OK in 2ms (Views: 0.6ms | ActiveRecord: 0.2ms)
+
+
+Started OPTIONS "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 21:06:05 -0500
+Processing by ApplicationController#cors_preflight_check as */*
+  Parameters: {"all"=>"users/new_unique_user"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 21:06:05 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"testing@gmail.com"}}
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE "users"."email" = 'testing@gmail.com' LIMIT 1
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "users" ("created_at", "email", "token", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", Wed, 10 Oct 2012 02:06:05 UTC +00:00], ["email", "testing@gmail.com"], ["token", nil], ["updated_at", Wed, 10 Oct 2012 02:06:05 UTC +00:00]]
+  [1m[36m (0.9ms)[0m  [1mcommit transaction[0m
+Completed 200 OK in 19ms (Views: 0.2ms | ActiveRecord: 2.0ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 21:06:58 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"testing@gmail.com"}}
+  [1m[35mUser Load (0.2ms)[0m  SELECT "users".* FROM "users" WHERE "users"."email" = 'testing@gmail.com' LIMIT 1
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 21:07:27 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"test@test.com"}}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = 'test@test.com' LIMIT 1[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "users" ("created_at", "email", "token", "updated_at") VALUES (?, ?, ?, ?)[0m  [["created_at", Wed, 10 Oct 2012 02:07:27 UTC +00:00], ["email", "test@test.com"], ["token", nil], ["updated_at", Wed, 10 Oct 2012 02:07:27 UTC +00:00]]
+  [1m[35m (0.9ms)[0m  commit transaction
+Completed 200 OK in 5ms (Views: 0.2ms | ActiveRecord: 1.5ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 21:09:55 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"mswiebod@gmail.com"}}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = 'mswiebod@gmail.com' LIMIT 1[0m
+Completed 200 OK in 1ms (Views: 0.2ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 21:11:38 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"mswiebod@gmail.com"}}
+  [1m[35mUser Load (0.2ms)[0m  SELECT "users".* FROM "users" WHERE "users"."email" = 'mswiebod@gmail.com' LIMIT 1
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 21:11:53 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"mswiebod@gmail.com"}}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = 'mswiebod@gmail.com' LIMIT 1[0m
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.2ms)
+
+
+Started OPTIONS "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 21:22:22 -0500
+Processing by ApplicationController#cors_preflight_check as */*
+  Parameters: {"all"=>"users/new_unique_user"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 21:22:22 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"test@test.com"}}
+  [1m[35mUser Load (0.2ms)[0m  SELECT "users".* FROM "users" WHERE "users"."email" = 'test@test.com' LIMIT 1
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 21:24:00 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"test@test.com"}}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = 'test@test.com' LIMIT 1[0m
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 21:26:53 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"test@test.com"}}
+  [1m[35mUser Load (0.2ms)[0m  SELECT "users".* FROM "users" WHERE "users"."email" = 'test@test.com' LIMIT 1
+Completed 200 OK in 32ms (Views: 0.2ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 21:27:16 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"test@test.com"}}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = 'test@test.com' LIMIT 1[0m
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 21:27:25 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"test@test.com"}}
+  [1m[35mUser Load (0.2ms)[0m  SELECT "users".* FROM "users" WHERE "users"."email" = 'test@test.com' LIMIT 1
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 21:28:43 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"test@test.com"}}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = 'test@test.com' LIMIT 1[0m
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 21:28:52 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"test@test.com"}}
+  [1m[35mUser Load (0.2ms)[0m  SELECT "users".* FROM "users" WHERE "users"."email" = 'test@test.com' LIMIT 1
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 21:29:08 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"mswiebod@gmail.com"}}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = 'mswiebod@gmail.com' LIMIT 1[0m
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 21:30:04 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"mswiebod@gmail.com"}}
+  [1m[35mUser Load (0.2ms)[0m  SELECT "users".* FROM "users" WHERE "users"."email" = 'mswiebod@gmail.com' LIMIT 1
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 21:30:18 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"mswiebod@gmail.com"}}
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = 'mswiebod@gmail.com' LIMIT 1[0m
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 21:30:52 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"mswiebod@gmail.com"}}
+  [1m[35mUser Load (0.2ms)[0m  SELECT "users".* FROM "users" WHERE "users"."email" = 'mswiebod@gmail.com' LIMIT 1
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/users" for 127.0.0.1 at 2012-10-09 22:07:29 -0500
+Processing by UsersController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" [0m
+Completed 200 OK in 3ms (Views: 1.4ms | ActiveRecord: 0.2ms)
+
+
+Started OPTIONS "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 22:10:30 -0500
+Processing by ApplicationController#cors_preflight_check as */*
+  Parameters: {"all"=>"users/new_unique_user"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 22:10:30 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"mswiebod@gmail.com"}}
+  [1m[35mUser Load (0.2ms)[0m  SELECT "users".* FROM "users" WHERE "users"."email" = 'mswiebod@gmail.com' LIMIT 1
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 22:11:41 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"mswiebod@gmail.com"}}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = 'mswiebod@gmail.com' LIMIT 1[0m
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 22:12:03 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"mswiebod@gmail.com"}}
+  [1m[35mUser Load (0.2ms)[0m  SELECT "users".* FROM "users" WHERE "users"."email" = 'mswiebod@gmail.com' LIMIT 1
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/places" for 127.0.0.1 at 2012-10-09 22:12:14 -0500
+Processing by PlacesController#index as HTML
+  [1m[36mPlace Load (0.1ms)[0m  [1mSELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)[0m
+Completed 200 OK in 7ms (Views: 1.7ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/places" for 127.0.0.1 at 2012-10-09 22:12:16 -0500
+Processing by PlacesController#index as HTML
+  [1m[35mPlace Load (0.2ms)[0m  SELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)
+Completed 200 OK in 1ms (Views: 0.5ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 22:12:52 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"mswiebod@gmail.com"}}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = 'mswiebod@gmail.com' LIMIT 1[0m
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.2ms)
+
+
+Started OPTIONS "/places?_dc=1349838772832" for 127.0.0.1 at 2012-10-09 22:12:52 -0500
+Processing by ApplicationController#cors_preflight_check as */*
+  Parameters: {"_dc"=>"1349838772832", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/places?_dc=1349838772832" for 127.0.0.1 at 2012-10-09 22:12:52 -0500
+Processing by PlacesController#index as */*
+  Parameters: {"_dc"=>"1349838772832"}
+  [1m[35mPlace Load (0.2ms)[0m  SELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)
+Completed 200 OK in 1ms (Views: 0.5ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 22:13:21 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"mswiebod@gmail.com"}}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = 'mswiebod@gmail.com' LIMIT 1[0m
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.2ms)
+
+
+Started OPTIONS "/places?_dc=1349838802837" for 127.0.0.1 at 2012-10-09 22:13:22 -0500
+Processing by ApplicationController#cors_preflight_check as */*
+  Parameters: {"_dc"=>"1349838802837", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/places?_dc=1349838802837" for 127.0.0.1 at 2012-10-09 22:13:22 -0500
+Processing by PlacesController#index as */*
+  Parameters: {"_dc"=>"1349838802837"}
+  [1m[35mPlace Load (0.2ms)[0m  SELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)
+Completed 200 OK in 1ms (Views: 0.4ms | ActiveRecord: 0.2ms)
+
+
+Started OPTIONS "/places.json?_dc=1349838805540&page=1&start=0&limit=25" for 127.0.0.1 at 2012-10-09 22:13:25 -0500
+Processing by ApplicationController#cors_preflight_check as JSON
+  Parameters: {"_dc"=>"1349838805540", "page"=>"1", "start"=>"0", "limit"=>"25", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/places.json?_dc=1349838805540&page=1&start=0&limit=25" for 127.0.0.1 at 2012-10-09 22:13:25 -0500
+Processing by PlacesController#index as JSON
+  Parameters: {"_dc"=>"1349838805540", "page"=>"1", "start"=>"0", "limit"=>"25"}
+  [1m[36mPlace Load (0.2ms)[0m  [1mSELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)[0m
+Completed 200 OK in 1ms (Views: 0.4ms | ActiveRecord: 0.2ms)
+
+
+Started OPTIONS "/places?_dc=1349838808023" for 127.0.0.1 at 2012-10-09 22:13:28 -0500
+Processing by ApplicationController#cors_preflight_check as */*
+  Parameters: {"_dc"=>"1349838808023", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/places?_dc=1349838808023" for 127.0.0.1 at 2012-10-09 22:13:28 -0500
+Processing by PlacesController#index as */*
+  Parameters: {"_dc"=>"1349838808023"}
+  [1m[35mPlace Load (0.2ms)[0m  SELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)
+Completed 200 OK in 1ms (Views: 0.4ms | ActiveRecord: 0.2ms)
+
+
+Started OPTIONS "/places.json?_dc=1349838810058" for 127.0.0.1 at 2012-10-09 22:13:30 -0500
+Processing by ApplicationController#cors_preflight_check as JSON
+  Parameters: {"_dc"=>"1349838810058", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started POST "/places.json?_dc=1349838810058" for 127.0.0.1 at 2012-10-09 22:13:30 -0500
+Processing by PlacesController#create as JSON
+  Parameters: {"uid"=>"0fdf0f6735cc005d5e63ef3ea026c031b2601277", "email"=>"mswiebod@gmail.com", "name"=>"Murphy's Red Hots", "ref"=>"", "saved"=>true, "come_back"=>false, "id"=>"ext-record-41", "_dc"=>"1349838810058"}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = 'mswiebod@gmail.com' LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (0.9ms)[0m  [1mINSERT INTO "places" ("archived", "come_back", "created_at", "name", "ref", "saved", "uid", "updated_at", "user_id") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["archived", false], ["come_back", false], ["created_at", Wed, 10 Oct 2012 03:13:30 UTC +00:00], ["name", "Murphy's Red Hots"], ["ref", ""], ["saved", true], ["uid", "0fdf0f6735cc005d5e63ef3ea026c031b2601277"], ["updated_at", Wed, 10 Oct 2012 03:13:30 UTC +00:00], ["user_id", 1]]
+  [1m[35m (1.7ms)[0m  commit transaction
+Completed 201 Created in 21ms (Views: 2.1ms | ActiveRecord: 2.8ms)
+
+
+Started OPTIONS "/places.json?_dc=1349838811700&page=1&start=0&limit=25" for 127.0.0.1 at 2012-10-09 22:13:31 -0500
+Processing by ApplicationController#cors_preflight_check as JSON
+  Parameters: {"_dc"=>"1349838811700", "page"=>"1", "start"=>"0", "limit"=>"25", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/places.json?_dc=1349838811700&page=1&start=0&limit=25" for 127.0.0.1 at 2012-10-09 22:13:31 -0500
+Processing by PlacesController#index as JSON
+  Parameters: {"_dc"=>"1349838811700", "page"=>"1", "start"=>"0", "limit"=>"25"}
+  [1m[36mPlace Load (0.3ms)[0m  [1mSELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)[0m
+Completed 200 OK in 3ms (Views: 2.3ms | ActiveRecord: 0.3ms)
+
+
+Started OPTIONS "/places?_dc=1349838813633" for 127.0.0.1 at 2012-10-09 22:13:33 -0500
+Processing by ApplicationController#cors_preflight_check as */*
+  Parameters: {"_dc"=>"1349838813633", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/places?_dc=1349838813633" for 127.0.0.1 at 2012-10-09 22:13:33 -0500
+Processing by PlacesController#index as */*
+  Parameters: {"_dc"=>"1349838813633"}
+  [1m[35mPlace Load (0.2ms)[0m  SELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.2ms)
+
+
+Started OPTIONS "/places.json?_dc=1349838815067" for 127.0.0.1 at 2012-10-09 22:13:35 -0500
+Processing by ApplicationController#cors_preflight_check as JSON
+  Parameters: {"_dc"=>"1349838815067", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started POST "/places.json?_dc=1349838815067" for 127.0.0.1 at 2012-10-09 22:13:35 -0500
+Processing by PlacesController#create as JSON
+  Parameters: {"uid"=>"c433db343045a29a512a99ca7855d0c302345995", "email"=>"mswiebod@gmail.com", "name"=>"Giordano's", "ref"=>"", "saved"=>true, "come_back"=>false, "id"=>"ext-record-62", "_dc"=>"1349838815067"}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = 'mswiebod@gmail.com' LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "places" ("archived", "come_back", "created_at", "name", "ref", "saved", "uid", "updated_at", "user_id") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["archived", false], ["come_back", false], ["created_at", Wed, 10 Oct 2012 03:13:35 UTC +00:00], ["name", "Giordano's"], ["ref", ""], ["saved", true], ["uid", "c433db343045a29a512a99ca7855d0c302345995"], ["updated_at", Wed, 10 Oct 2012 03:13:35 UTC +00:00], ["user_id", 1]]
+  [1m[35m (151.9ms)[0m  commit transaction
+Completed 201 Created in 157ms (Views: 1.1ms | ActiveRecord: 152.8ms)
+
+
+Started OPTIONS "/places.json?_dc=1349838815681" for 127.0.0.1 at 2012-10-09 22:13:35 -0500
+Processing by ApplicationController#cors_preflight_check as JSON
+  Parameters: {"_dc"=>"1349838815681", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started POST "/places.json?_dc=1349838815681" for 127.0.0.1 at 2012-10-09 22:13:35 -0500
+Processing by PlacesController#create as JSON
+  Parameters: {"uid"=>"933734c1d35ce731edb8db866a8702fc22a61c2e", "email"=>"mswiebod@gmail.com", "name"=>"Mi Tierra Restaurant", "ref"=>"", "saved"=>true, "come_back"=>false, "id"=>"ext-record-63", "_dc"=>"1349838815681"}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = 'mswiebod@gmail.com' LIMIT 1[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO "places" ("archived", "come_back", "created_at", "name", "ref", "saved", "uid", "updated_at", "user_id") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["archived", false], ["come_back", false], ["created_at", Wed, 10 Oct 2012 03:13:35 UTC +00:00], ["name", "Mi Tierra Restaurant"], ["ref", ""], ["saved", true], ["uid", "933734c1d35ce731edb8db866a8702fc22a61c2e"], ["updated_at", Wed, 10 Oct 2012 03:13:35 UTC +00:00], ["user_id", 1]]
+  [1m[35m (1.1ms)[0m  commit transaction
+Completed 201 Created in 6ms (Views: 1.0ms | ActiveRecord: 2.0ms)
+
+
+Started OPTIONS "/places.json?_dc=1349838816319" for 127.0.0.1 at 2012-10-09 22:13:36 -0500
+Processing by ApplicationController#cors_preflight_check as JSON
+  Parameters: {"_dc"=>"1349838816319", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started POST "/places.json?_dc=1349838816319" for 127.0.0.1 at 2012-10-09 22:13:36 -0500
+Processing by PlacesController#create as JSON
+  Parameters: {"uid"=>"aef3039506be9bc47ba4efa35039e717d5e61e3c", "email"=>"mswiebod@gmail.com", "name"=>"La Gondola", "ref"=>"", "saved"=>true, "come_back"=>false, "id"=>"ext-record-64", "_dc"=>"1349838816319"}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = 'mswiebod@gmail.com' LIMIT 1[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "places" ("archived", "come_back", "created_at", "name", "ref", "saved", "uid", "updated_at", "user_id") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["archived", false], ["come_back", false], ["created_at", Wed, 10 Oct 2012 03:13:36 UTC +00:00], ["name", "La Gondola"], ["ref", ""], ["saved", true], ["uid", "aef3039506be9bc47ba4efa35039e717d5e61e3c"], ["updated_at", Wed, 10 Oct 2012 03:13:36 UTC +00:00], ["user_id", 1]]
+  [1m[35m (0.9ms)[0m  commit transaction
+Completed 201 Created in 5ms (Views: 0.9ms | ActiveRecord: 1.5ms)
+
+
+Started OPTIONS "/places.json?_dc=1349838816826" for 127.0.0.1 at 2012-10-09 22:13:36 -0500
+Processing by ApplicationController#cors_preflight_check as JSON
+  Parameters: {"_dc"=>"1349838816826", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started POST "/places.json?_dc=1349838816826" for 127.0.0.1 at 2012-10-09 22:13:36 -0500
+Processing by PlacesController#create as JSON
+  Parameters: {"uid"=>"d0562bdf5dd6a09d420a33ece7e912fe7d94da30", "email"=>"mswiebod@gmail.com", "name"=>"Jeanny's Chinese Restaurant", "ref"=>"", "saved"=>true, "come_back"=>false, "id"=>"ext-record-65", "_dc"=>"1349838816826"}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = 'mswiebod@gmail.com' LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "places" ("archived", "come_back", "created_at", "name", "ref", "saved", "uid", "updated_at", "user_id") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["archived", false], ["come_back", false], ["created_at", Wed, 10 Oct 2012 03:13:36 UTC +00:00], ["name", "Jeanny's Chinese Restaurant"], ["ref", ""], ["saved", true], ["uid", "d0562bdf5dd6a09d420a33ece7e912fe7d94da30"], ["updated_at", Wed, 10 Oct 2012 03:13:36 UTC +00:00], ["user_id", 1]]
+  [1m[35m (1.0ms)[0m  commit transaction
+Completed 201 Created in 6ms (Views: 1.1ms | ActiveRecord: 1.6ms)
+
+
+Started OPTIONS "/places.json?_dc=1349838817597" for 127.0.0.1 at 2012-10-09 22:13:37 -0500
+Processing by ApplicationController#cors_preflight_check as JSON
+  Parameters: {"_dc"=>"1349838817597", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started POST "/places.json?_dc=1349838817597" for 127.0.0.1 at 2012-10-09 22:13:37 -0500
+Processing by PlacesController#create as JSON
+  Parameters: {"uid"=>"7b52182ad8b4b316326155628a3e6b5ea42b0192", "email"=>"mswiebod@gmail.com", "name"=>"Howard's Wine Cellar", "ref"=>"", "saved"=>true, "come_back"=>false, "id"=>"ext-record-66", "_dc"=>"1349838817597"}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = 'mswiebod@gmail.com' LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "places" ("archived", "come_back", "created_at", "name", "ref", "saved", "uid", "updated_at", "user_id") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["archived", false], ["come_back", false], ["created_at", Wed, 10 Oct 2012 03:13:37 UTC +00:00], ["name", "Howard's Wine Cellar"], ["ref", ""], ["saved", true], ["uid", "7b52182ad8b4b316326155628a3e6b5ea42b0192"], ["updated_at", Wed, 10 Oct 2012 03:13:37 UTC +00:00], ["user_id", 1]]
+  [1m[35m (1.9ms)[0m  commit transaction
+Completed 201 Created in 6ms (Views: 1.0ms | ActiveRecord: 2.5ms)
+
+
+Started OPTIONS "/places.json?_dc=1349838818940" for 127.0.0.1 at 2012-10-09 22:13:38 -0500
+Processing by ApplicationController#cors_preflight_check as JSON
+  Parameters: {"_dc"=>"1349838818940", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started POST "/places.json?_dc=1349838818940" for 127.0.0.1 at 2012-10-09 22:13:38 -0500
+Processing by PlacesController#create as JSON
+  Parameters: {"uid"=>"9e89d104d7011af79cd3e25db64e63ce72f8a33c", "email"=>"mswiebod@gmail.com", "name"=>"Great American Bagel", "ref"=>"", "saved"=>true, "come_back"=>false, "id"=>"ext-record-67", "_dc"=>"1349838818940"}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = 'mswiebod@gmail.com' LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "places" ("archived", "come_back", "created_at", "name", "ref", "saved", "uid", "updated_at", "user_id") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["archived", false], ["come_back", false], ["created_at", Wed, 10 Oct 2012 03:13:38 UTC +00:00], ["name", "Great American Bagel"], ["ref", ""], ["saved", true], ["uid", "9e89d104d7011af79cd3e25db64e63ce72f8a33c"], ["updated_at", Wed, 10 Oct 2012 03:13:38 UTC +00:00], ["user_id", 1]]
+  [1m[35m (0.8ms)[0m  commit transaction
+Completed 201 Created in 7ms (Views: 0.9ms | ActiveRecord: 1.7ms)
+
+
+Started OPTIONS "/places.json?_dc=1349838820837&page=1&start=0&limit=25" for 127.0.0.1 at 2012-10-09 22:13:40 -0500
+Processing by ApplicationController#cors_preflight_check as JSON
+  Parameters: {"_dc"=>"1349838820837", "page"=>"1", "start"=>"0", "limit"=>"25", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/places.json?_dc=1349838820837&page=1&start=0&limit=25" for 127.0.0.1 at 2012-10-09 22:13:40 -0500
+Processing by PlacesController#index as JSON
+  Parameters: {"_dc"=>"1349838820837", "page"=>"1", "start"=>"0", "limit"=>"25"}
+  [1m[36mPlace Load (0.3ms)[0m  [1mSELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)[0m
+Completed 200 OK in 6ms (Views: 5.2ms | ActiveRecord: 0.3ms)
+
+
+Started OPTIONS "/places?_dc=1349838826943" for 127.0.0.1 at 2012-10-09 22:13:46 -0500
+Processing by ApplicationController#cors_preflight_check as */*
+  Parameters: {"_dc"=>"1349838826943", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/places?_dc=1349838826943" for 127.0.0.1 at 2012-10-09 22:13:46 -0500
+Processing by PlacesController#index as */*
+  Parameters: {"_dc"=>"1349838826943"}
+  [1m[35mPlace Load (0.2ms)[0m  SELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)
+Completed 200 OK in 4ms (Views: 3.8ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 22:13:48 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"mswiebod@gmail.com"}}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = 'mswiebod@gmail.com' LIMIT 1[0m
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.2ms)
+
+
+Started OPTIONS "/places?_dc=1349838829518" for 127.0.0.1 at 2012-10-09 22:13:49 -0500
+Processing by ApplicationController#cors_preflight_check as */*
+  Parameters: {"_dc"=>"1349838829518", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/places?_dc=1349838829518" for 127.0.0.1 at 2012-10-09 22:13:49 -0500
+Processing by PlacesController#index as */*
+  Parameters: {"_dc"=>"1349838829518"}
+  [1m[35mPlace Load (0.2ms)[0m  SELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)
+Completed 200 OK in 5ms (Views: 4.5ms | ActiveRecord: 0.2ms)
+
+
+Started OPTIONS "/places.json?_dc=1349838833218&page=1&start=0&limit=25" for 127.0.0.1 at 2012-10-09 22:13:53 -0500
+Processing by ApplicationController#cors_preflight_check as JSON
+  Parameters: {"_dc"=>"1349838833218", "page"=>"1", "start"=>"0", "limit"=>"25", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/places.json?_dc=1349838833218&page=1&start=0&limit=25" for 127.0.0.1 at 2012-10-09 22:13:53 -0500
+Processing by PlacesController#index as JSON
+  Parameters: {"_dc"=>"1349838833218", "page"=>"1", "start"=>"0", "limit"=>"25"}
+  [1m[36mPlace Load (0.3ms)[0m  [1mSELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)[0m
+Completed 200 OK in 5ms (Views: 4.7ms | ActiveRecord: 0.3ms)
+
+
+Started OPTIONS "/places.json?_dc=1349838835538&page=1&start=0&limit=25" for 127.0.0.1 at 2012-10-09 22:13:55 -0500
+Processing by ApplicationController#cors_preflight_check as JSON
+  Parameters: {"_dc"=>"1349838835538", "page"=>"1", "start"=>"0", "limit"=>"25", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/places.json?_dc=1349838835538&page=1&start=0&limit=25" for 127.0.0.1 at 2012-10-09 22:13:55 -0500
+Processing by PlacesController#index as JSON
+  Parameters: {"_dc"=>"1349838835538", "page"=>"1", "start"=>"0", "limit"=>"25"}
+  [1m[35mPlace Load (0.2ms)[0m  SELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)
+Completed 200 OK in 4ms (Views: 3.8ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/places" for 127.0.0.1 at 2012-10-09 22:13:59 -0500
+Processing by PlacesController#index as HTML
+  [1m[36mPlace Load (0.3ms)[0m  [1mSELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)[0m
+Completed 200 OK in 5ms (Views: 4.8ms | ActiveRecord: 0.3ms)
+
+
+Started OPTIONS "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 22:22:46 -0500
+Processing by ApplicationController#cors_preflight_check as */*
+  Parameters: {"all"=>"users/new_unique_user"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 22:22:46 -0500
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"mswiebod@gmail.com"}}
+  [1m[35mUser Load (0.2ms)[0m  SELECT "users".* FROM "users" WHERE "users"."email" = 'mswiebod@gmail.com' LIMIT 1
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.2ms)
+
+
+Started OPTIONS "/places?_dc=1349839366856" for 127.0.0.1 at 2012-10-09 22:22:46 -0500
+Processing by ApplicationController#cors_preflight_check as */*
+  Parameters: {"_dc"=>"1349839366856", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/places?_dc=1349839366856" for 127.0.0.1 at 2012-10-09 22:22:46 -0500
+Processing by PlacesController#index as */*
+  Parameters: {"_dc"=>"1349839366856"}
+  [1m[36mPlace Load (0.2ms)[0m  [1mSELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)[0m
+Completed 200 OK in 5ms (Views: 4.0ms | ActiveRecord: 0.2ms)
+
+
+Started OPTIONS "/places.json?_dc=1349839370810&page=1&start=0&limit=25" for 127.0.0.1 at 2012-10-09 22:22:50 -0500
+Processing by ApplicationController#cors_preflight_check as JSON
+  Parameters: {"_dc"=>"1349839370810", "page"=>"1", "start"=>"0", "limit"=>"25", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/places.json?_dc=1349839370810&page=1&start=0&limit=25" for 127.0.0.1 at 2012-10-09 22:22:50 -0500
+Processing by PlacesController#index as JSON
+  Parameters: {"_dc"=>"1349839370810", "page"=>"1", "start"=>"0", "limit"=>"25"}
+  [1m[35mPlace Load (0.2ms)[0m  SELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)
+Completed 200 OK in 22ms (Views: 21.5ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/users/new_unique_user" for 127.0.0.1 at 2012-10-09 22:24:32 -0500
+Connecting to database specified by database.yml
+Processing by UsersController#new_unique_user as */*
+  Parameters: {"user"=>{"email"=>"mswiebod@gmail.com"}}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = 'mswiebod@gmail.com' LIMIT 1[0m
+Completed 200 OK in 86ms (Views: 0.2ms | ActiveRecord: 1.9ms)
+
+
+Started OPTIONS "/places?_dc=1349839472755" for 127.0.0.1 at 2012-10-09 22:24:32 -0500
+Processing by ApplicationController#cors_preflight_check as */*
+  Parameters: {"_dc"=>"1349839472755", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/places?_dc=1349839472755" for 127.0.0.1 at 2012-10-09 22:24:32 -0500
+Processing by PlacesController#index as */*
+  Parameters: {"_dc"=>"1349839472755"}
+  [1m[35mPlace Load (0.1ms)[0m  SELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)
+Completed 200 OK in 37ms (Views: 22.7ms | ActiveRecord: 0.4ms)
+
+
+Started OPTIONS "/places.json?_dc=1349839478481&page=1&start=0&limit=25" for 127.0.0.1 at 2012-10-09 22:24:38 -0500
+Processing by ApplicationController#cors_preflight_check as JSON
+  Parameters: {"_dc"=>"1349839478481", "page"=>"1", "start"=>"0", "limit"=>"25", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/places.json?_dc=1349839478481&page=1&start=0&limit=25" for 127.0.0.1 at 2012-10-09 22:24:38 -0500
+Processing by PlacesController#index as JSON
+  Parameters: {"_dc"=>"1349839478481", "page"=>"1", "start"=>"0", "limit"=>"25"}
+  [1m[36mPlace Load (0.3ms)[0m  [1mSELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)[0m
+Completed 200 OK in 6ms (Views: 4.8ms | ActiveRecord: 0.3ms)
+
+
+Started OPTIONS "/places?_dc=1349839486786" for 127.0.0.1 at 2012-10-09 22:24:46 -0500
+Processing by ApplicationController#cors_preflight_check as */*
+  Parameters: {"_dc"=>"1349839486786", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/places?_dc=1349839486786" for 127.0.0.1 at 2012-10-09 22:24:46 -0500
+Processing by PlacesController#index as */*
+  Parameters: {"_dc"=>"1349839486786"}
+  [1m[35mPlace Load (0.2ms)[0m  SELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)
+Completed 200 OK in 4ms (Views: 3.8ms | ActiveRecord: 0.2ms)
+
+
+Started OPTIONS "/places.json?_dc=1349839489674&page=1&start=0&limit=25" for 127.0.0.1 at 2012-10-09 22:24:49 -0500
+Processing by ApplicationController#cors_preflight_check as JSON
+  Parameters: {"_dc"=>"1349839489674", "page"=>"1", "start"=>"0", "limit"=>"25", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/places.json?_dc=1349839489674&page=1&start=0&limit=25" for 127.0.0.1 at 2012-10-09 22:24:49 -0500
+Processing by PlacesController#index as JSON
+  Parameters: {"_dc"=>"1349839489674", "page"=>"1", "start"=>"0", "limit"=>"25"}
+  [1m[36mPlace Load (0.2ms)[0m  [1mSELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)[0m
+Completed 200 OK in 4ms (Views: 3.8ms | ActiveRecord: 0.2ms)
+
+
+Started OPTIONS "/places?_dc=1349839501981" for 127.0.0.1 at 2012-10-09 22:25:01 -0500
+Processing by ApplicationController#cors_preflight_check as */*
+  Parameters: {"_dc"=>"1349839501981", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/places?_dc=1349839501981" for 127.0.0.1 at 2012-10-09 22:25:01 -0500
+Processing by PlacesController#index as */*
+  Parameters: {"_dc"=>"1349839501981"}
+  [1m[35mPlace Load (0.2ms)[0m  SELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)
+Completed 200 OK in 4ms (Views: 3.7ms | ActiveRecord: 0.2ms)
+
+
+Started OPTIONS "/places.json?_dc=1349839507675&page=1&start=0&limit=25" for 127.0.0.1 at 2012-10-09 22:25:07 -0500
+Processing by ApplicationController#cors_preflight_check as JSON
+  Parameters: {"_dc"=>"1349839507675", "page"=>"1", "start"=>"0", "limit"=>"25", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/places.json?_dc=1349839507675&page=1&start=0&limit=25" for 127.0.0.1 at 2012-10-09 22:25:07 -0500
+Processing by PlacesController#index as JSON
+  Parameters: {"_dc"=>"1349839507675", "page"=>"1", "start"=>"0", "limit"=>"25"}
+  [1m[36mPlace Load (0.2ms)[0m  [1mSELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)[0m
+Completed 200 OK in 6ms (Views: 4.8ms | ActiveRecord: 0.2ms)
+
+
+Started OPTIONS "/places?_dc=1349839509966" for 127.0.0.1 at 2012-10-09 22:25:09 -0500
+Processing by ApplicationController#cors_preflight_check as */*
+  Parameters: {"_dc"=>"1349839509966", "all"=>"places"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/places?_dc=1349839509966" for 127.0.0.1 at 2012-10-09 22:25:09 -0500
+Processing by PlacesController#index as */*
+  Parameters: {"_dc"=>"1349839509966"}
+  [1m[35mPlace Load (0.2ms)[0m  SELECT "places".* FROM "places" WHERE (archived != 't' OR archived IS NULL)
+Completed 200 OK in 4ms (Views: 3.7ms | ActiveRecord: 0.2ms)
