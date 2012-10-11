@@ -4,13 +4,19 @@ SavedList::Application.routes.draw do
   resources :users, except: :edit
   
   # For catching OPTIONS and sending 200 status so that request will be resent (CORS)
-  match '*all' => 'application#cors_preflight_check', :constraints => {:method => 'OPTIONS'}
+  match '*all' => 'application#cors_preflight_check', :constraints => { :method => 'OPTIONS' }
   
   # For geo Google Places WS
   match '/geo' => 'places#geo'
   
   # For creating a new unique user (if doesn't already exist)
-  match '/users/new_unique_user' => 'users#new_unique_user', :constraints => {:method => 'POST'}
+  match '/users/new_unique_user' => 'users#new_unique_user', :constraints => { :method => 'POST' }
+  
+  # For user login
+  match '/login' => 'users#login', :constraints => { :method => 'POST' }
+  
+  # For user setting if using password or not
+  match '/users/setusepassword' => 'users#setusepassword', :constraints => { :method => 'POST' }
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

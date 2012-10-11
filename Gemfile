@@ -16,3 +16,4 @@ gem 'rack-jsonp-middleware'
 
 gem 'httparty'
 
+gem 'bcrypt-ruby', :require => 'bcrypt'

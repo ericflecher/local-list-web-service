@@ -73,6 +73,9 @@ class UsersController < ApplicationController
     if user.new_record?
       created = true
       
+      #use_password default to false
+      user.use_password = false
+      
       if user.save
         success = true
       else
@@ -83,12 +86,44 @@ class UsersController < ApplicationController
       success = true
     end
     
-    response = { :success => success, :created => created, :user_id => user.id }
+    response = { :success => success, :created => created }
     
     puts '>>> User:'
     puts user.inspect
     puts '>>> response'
     puts response.inspect
+    
+    render json: response
+  end
+  
+  # POST /login
+  # POST /login.json
+  def login
+    user = User.authenticate(params[:email], params[:password])
+    if user
+      response = { :success => true, :user_id => user.id }
+    else
+      response = { :success => false, :user_id => nil }
+    end
+    
+    render json: response
+  end
+  
+  # POST /users/setusepassword
+  # POST /users/setusepassword.json
+  def setusepassword
+    user = User.find_by_email(params[:email])
+    
+    if params.has_key?(:use_password)
+      user.use_password = params[:use_password]
+      if user.save
+        response = { :success => true }
+      else
+        response = { :success => false }
+      end
+    else
+      response = { :success => false }
+    end
     
     render json: response
   end
