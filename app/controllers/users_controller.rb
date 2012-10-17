@@ -116,6 +116,7 @@ class UsersController < ApplicationController
     
     if params.has_key?(:use_password)
       user.use_password = params[:use_password]
+      user.password = params[:password]
       if user.save
         response = { :success => true }
       else
