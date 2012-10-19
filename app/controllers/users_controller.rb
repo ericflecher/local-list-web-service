@@ -128,4 +128,16 @@ class UsersController < ApplicationController
     
     render json: response
   end
+  
+  # POST /users/userbyemail
+  # POST /users/userbyemail.json
+  def userbyemail
+    user = User.find_by_email(params[:email])
+    
+    if user
+      render json: user
+    else
+      render json: { :success => false }
+    end
+  end
 end

@@ -17,6 +17,9 @@ SavedList::Application.routes.draw do
   
   # For user setting if using password or not
   match '/users/setusepassword' => 'users#setusepassword', :constraints => { :method => 'POST' }
+  
+  # For getting user by email
+  match '/users/userbyemail' => 'users#userbyemail', :constraints => { :method => 'POST' }
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
