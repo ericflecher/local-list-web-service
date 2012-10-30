@@ -108,6 +108,8 @@ class PlacesController < ApplicationController
   end
   
   # POST /geo
+  # GET /geo
+  # *** ? /geo
   def geo
     puts '>>> GEO WS'
     #puts 'Lat Lng'
@@ -147,7 +149,42 @@ class PlacesController < ApplicationController
       payload[:success] = true
       payload[:results] = results
       
-      render json: payload      
+      render json: payload
     end
+  end
+  
+  require 'nokogiri'
+  require 'open-uri'
+  # POST /otp
+  # POST /otp.json
+  def ot_parser
+    
+    
+    base_url = 'http://m.opentable.com'
+    url = '/restaurants/shaws-crab-house-chicago/47?Rid=47&EarlyPoints=0&ExactPoints=100&ExactSecurityID=1273584753&ExactTime=09%2F22%2F2012%2021%3A00%3A00&LaterPoints=100&LaterSecurityID=1273584759&LaterTime=09%2F22%2F2012%2021%3A15%3A00&ResultsKey=Fv2ZHE56cyM24CWTNrCBvg%253d%253d&SearchDateTime=09%2F22%2F2012%2021%3A00%3A00&PartySize=2&OfferConfirmNumber=0&ChosenOfferId=0'
+    
+    # Get a Nokogiri::HTML::Document for the page we’re interested in...
+    doc = Nokogiri::HTML(open(base_url + url))
+    
+    # Init times array
+    response = []
+    time = {}
+    
+    # Search for nodes by css
+    doc.css('#ulSlots li a').each do |link|
+      time = {}
+      time["url"] = base_url + link['href']
+      time["time"] = link.content.strip
+      
+      # puts '>>> time:'
+      # puts time.inspect
+      
+      response << time
+    end
+    
+    # puts '>>> response:'
+    puts response.inspect
+    
+    render json: response
   end
 end

@@ -9,6 +9,9 @@ SavedList::Application.routes.draw do
   # For geo Google Places WS
   match '/geo' => 'places#geo'
   
+  # For Open Table HTML parser
+  match '/otp' => 'places#ot_parser' #, :constraints => { :method => 'POST' }
+  
   # For creating a new unique user (if doesn't already exist)
   match '/users/new_unique_user' => 'users#new_unique_user', :constraints => { :method => 'POST' }
   

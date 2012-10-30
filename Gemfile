@@ -17,3 +17,6 @@ gem 'rack-jsonp-middleware'
 gem 'httparty'
 
 gem 'bcrypt-ruby', :require => 'bcrypt'
+
+# GEMS SPECIFIC TO OPEN_TABLE_PARSER:
+gem 'nokogiri'
