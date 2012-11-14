@@ -20,3 +20,4 @@ gem 'bcrypt-ruby', :require => 'bcrypt'
 
 # GEMS SPECIFIC TO OPEN_TABLE_PARSER:
 gem 'nokogiri'
+gem 'awesome_print'

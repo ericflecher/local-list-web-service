@@ -155,31 +155,86 @@ class PlacesController < ApplicationController
   
   require 'nokogiri'
   require 'open-uri'
+  require 'httparty'
+  require 'ap'
+  # GET /otp (TEMPORARY)
   # POST /otp
   # POST /otp.json
   def ot_parser
     
-    
-    base_url = 'http://m.opentable.com'
-    url = '/restaurants/shaws-crab-house-chicago/47?Rid=47&EarlyPoints=0&ExactPoints=100&ExactSecurityID=1273584753&ExactTime=09%2F22%2F2012%2021%3A00%3A00&LaterPoints=100&LaterSecurityID=1273584759&LaterTime=09%2F22%2F2012%2021%3A15%3A00&ResultsKey=Fv2ZHE56cyM24CWTNrCBvg%253d%253d&SearchDateTime=09%2F22%2F2012%2021%3A00%3A00&PartySize=2&OfferConfirmNumber=0&ChosenOfferId=0'
-    
-    # Get a Nokogiri::HTML::Document for the page we’re interested in...
-    doc = Nokogiri::HTML(open(base_url + url))
+    # check for params
+    puts ">>> PARAMS:"
+    puts params
     
     # Init times array
     response = []
-    time = {}
     
-    # Search for nodes by css
-    doc.css('#ulSlots li a').each do |link|
-      time = {}
-      time["url"] = base_url + link['href']
-      time["time"] = link.content.strip
-      
-      # puts '>>> time:'
-      # puts time.inspect
-      
-      response << time
+    if params.has_key?(:s)
+      if params[:s] == '1'
+        # Step 1 - get Restaurant ID
+        
+        base_url = 'https://www.googleapis.com/customsearch'
+        api_key = 'AIzaSyDfvlLdmPj5jPMYy54KLcmkgvD68oFt5fM'
+        custom_search_key = '016942613514382480740:iokbti_buou'
+        query = 'rise%20sushi%20chicago'
+        type = 'json'
+        num = '5'
+        url = base_url + '/v1?key=' + api_key + '&cx=' + custom_search_key + '&q=' + query + '&alt=' + type + '&num=' + num
+        
+        puts '>>> google search url:'
+        puts url
+        
+        results = HTTParty.get(url).parsed_response["items"]
+        
+        puts '>>> results:'
+        # ap results
+        
+        rid_const = 'rid'
+        
+        open_table_restaurant_url = results[0]["link"]
+        
+        results.each do |result|
+          link = result["link"]
+          ap link
+          
+          if link.index(rid_const)
+            response << link
+            open_table_restaurant_url = link
+          end
+        end
+        
+        ap open_table_restaurant_url
+        
+        # TODO: extract rid from url with rid in it, if found in above do loop
+        # 
+        #  do stuff get it, add it to response
+        # 
+        # 
+        # response << open_table_restaurant_url
+        
+      elsif params[:s] == '2'
+        # Step 2 - get Times
+        
+        time = {}
+        
+        base_url = 'http://m.opentable.com'
+        url = base_url + '/restaurants/shaws-crab-house-chicago/47?Rid=47&EarlyPoints=0&ExactPoints=100&ExactSecurityID=1273584753&ExactTime=09%2F22%2F2012%2021%3A00%3A00&LaterPoints=100&LaterSecurityID=1273584759&LaterTime=09%2F22%2F2012%2021%3A15%3A00&ResultsKey=Fv2ZHE56cyM24CWTNrCBvg%253d%253d&SearchDateTime=09%2F22%2F2012%2021%3A00%3A00&PartySize=2&OfferConfirmNumber=0&ChosenOfferId=0'
+        
+        # Get a Nokogiri::HTML::Document for the page we’re interested in...
+        doc = Nokogiri::HTML(open(url))
+        
+        # Search for nodes by css
+        doc.css('#ulSlots li a').each do |link|
+          time = {}
+          time["url"] = base_url + link['href']
+          time["time"] = link.content.strip
+          
+          # puts '>>> time:'
+          # puts time.inspect
+          
+          response << time
+        end
+      end
     end
     
     # puts '>>> response:'
