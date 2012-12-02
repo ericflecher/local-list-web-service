@@ -167,90 +167,119 @@ class PlacesController < ApplicationController
     puts params
     
     # Init times array
-    response = []
-    
-    # >>> Step 1 - get Restaurant ID
-    
-    # vars / constants for google search url
-    base_url = 'https://www.googleapis.com/customsearch/v1'
-    api_key = 'AIzaSyDfvlLdmPj5jPMYy54KLcmkgvD68oFt5fM'
-    custom_search_key = '016942613514382480740:iokbti_buou'
-    q = 'rise sushi chicago'
-    # q = 'shaws chicago'
-    type = 'json'
-    num = '5'
-    
-    query = '?key=' + api_key + '&cx=' + custom_search_key + '&q=' + (CGI::escape q) + '&alt=' + type + '&num=' + num
-    url = base_url + query
-    
-    puts '>>> google search url:'
-    puts url
-    
-    # get GET result from google search results
-    results = HTTParty.get(url).parsed_response["items"]
-    
-    puts '>>> results:'
-    # ap results
-        
-    rid_const = 'rid='
-    
-    ot_url = results[0]["link"]
-    
-    results.each do |result|
-      link = result["link"]
-      ap link
+    response = {}
+    puts '>>> has params check here'
+    if params.has_key?(:r) && params.has_key?(:c) && params.has_key?(:s) && params.has_key?(:d)
+      # >>> Step 1 - get Restaurant ID
       
-      if link.index(rid_const)
-        ot_url = link
-        break
+      # constants for google search url
+      base_url = 'https://www.googleapis.com/customsearch/v1'
+      api_key = 'AIzaSyDfvlLdmPj5jPMYy54KLcmkgvD68oFt5fM'
+      custom_search_key = '016942613514382480740:iokbti_buou'
+      
+      # vars for google search url
+      
+      # query is restaurant and city
+      q = params[:r] + " " + params[:c]
+      # q = 'rise sushi chicago'
+      # q = 'shaws chicago'
+      type = 'json'
+      # number of results
+      num = '10'
+      
+      query = '?key=' + api_key + '&cx=' + custom_search_key + '&q=' + (CGI::escape q) + '&alt=' + type + '&num=' + num
+      
+      puts '>>> query'
+      ap query
+      
+      url = base_url + query
+      
+      puts '>>> google search url:'
+      puts url
+      
+      # get GET result from google search results
+      results = HTTParty.get(url).parsed_response["items"]
+      
+      puts '>>> results:'
+      # ap results
+      
+      if results
+        
+        rid_const = 'rid='
+        
+        ot_url = results[0]["link"]
+        
+        results.each do |result|
+          link = result["link"]
+          ap link
+          
+          if link.index(rid_const)
+            ot_url = link
+            break
+          end
+        end
+        
+        # Check if the link has rid in it
+        index = ot_url.index(rid_const)
+        
+        puts '>>> index of rid'
+        ap index
+        rid = nil
+        if index
+          # get the rid
+          rid = ot_url.slice(index+rid_const.length..ot_url.length)
+          puts '>>> rid'
+          ap rid
+        end
+        
+        # Test incase rid is not the last param
+        # ot_url += "&test=blah&r=fake"
+        
+        puts '>>> ot_url:'
+        ap ot_url
+        
+        puts '>>> rid:'
+        ap rid
+        
+        # >>> Step 2 - get Times
+        
+        # http://m.opentable.com/search/results?Date=2012-12-19T13%3A35%3A00&PartySize=2&RestaurantID=47
+        base_url = 'http://m.opentable.com'
+        base_search_url = base_url + '/search/results'
+        party_size = params[:s]
+        # date_time = '2013-01-11T20:00:00'
+        date_time = params[:d]
+        query = '?Date=' + (CGI::escape date_time) + '&PartySize=' + (CGI::escape party_size) + '&RestaurantID=' + rid
+        url = base_search_url + query
+        
+        puts '>>> open table url:'
+        ap url
+        
+        # Get a Nokogiri::HTML::Document for the page we’re interested in...
+        doc = Nokogiri::HTML(open(url))
+        
+        # times results array
+        times = []
+        
+        # Search for nodes by css
+        doc.css('ul#ulSlots li.ti a').each do |link|
+        # doc.css('#ulSlots li a').each do |link|
+          time = {}
+          time["url"] = base_url + link['href']
+          time["time"] = link.content.strip
+        
+          times << time
+        end
+        
+        if times.empty?
+          response[:error] = { :exists => "true", :error => "true", :url => url }
+        else
+          response[:error] = { :exists => "true", :error => "false", :url => url }
+          response[:times] = times
+        end
+      else
+        response[:error] = { :exists => "false" }
       end
-    end
-    
-    # Check if the link has rid in it
-    index = ot_url.index(rid_const)
-    
-    puts '>>> index of rid'
-    ap index
-    rid = nil
-    if index
-      # get the rid
-      rid = ot_url.slice(index+rid_const.length..ot_url.length)
-      puts '>>> rid'
-      ap rid
-    end
-    
-    # Test incase rid is not the last param
-    # ot_url += "&test=blah&r=fake"
-    
-    puts '>>> ot_url:'
-    ap ot_url
-    
-    puts '>>> rid:'
-    ap rid
-        
-    # >>> Step 2 - get Times
-    
-    # http://m.opentable.com/search/results?Date=2012-12-19T13%3A35%3A00&PartySize=2&RestaurantID=47
-    base_url = 'http://m.opentable.com/search/results'
-    party_size = '5'
-    date_time = '2013-01-11T20:00:00'
-    query = '?Date=' + (CGI::escape date_time) + '&PartySize=' + (CGI::escape party_size) + '&RestaurantID=' + rid
-    url = base_url + query
-    
-    puts '>>> open table url:'
-    ap url
-        
-    # Get a Nokogiri::HTML::Document for the page we’re interested in...
-    doc = Nokogiri::HTML(open(url))
-        
-    # Search for nodes by css
-    doc.css('ul#ulSlots li.ti a').each do |link|
-    # doc.css('#ulSlots li a').each do |link|
-      time = {}
-      time["url"] = base_url + link['href']
-      time["time"] = link.content.strip
-        
-      response << time
     end
     
     # puts '>>> response:'
