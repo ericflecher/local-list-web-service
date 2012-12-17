@@ -248,8 +248,9 @@ class PlacesController < ApplicationController
         base_search_url = base_url + '/search/results'
         party_size = params[:s]
         # date_time = '2013-01-11T20:00:00'
-        date_time = params[:d]
-        query = '?Date=' + (CGI::escape date_time) + '&PartySize=' + (CGI::escape party_size) + '&RestaurantID=' + rid
+        date = params[:d]
+        time = params[:t]
+        query = '?' + 'Date=' + (CGI::escape date) + '&TimeInvariantCulture=' + (CGI::escape time) + '&PartySize=' + (CGI::escape party_size) + '&RestaurantID=' + rid
         url = base_search_url + query
         
         puts '>>> open table url:'
