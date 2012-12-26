@@ -2,8 +2,10 @@
 
 one:
   name: MyString
-  id: MyString
+  location: MyString
+  ot_rid: MyString
 
 two:
   name: MyString
-  id: MyString
+  location: MyString
+  ot_rid: MyString

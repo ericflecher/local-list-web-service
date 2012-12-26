@@ -1,4 +1,4 @@
-class CreatePlaces < ActiveRecord::Migration
+class CreatePlacesOld < ActiveRecord::Migration
   def change
     create_table :places do |t|
       t.string :name

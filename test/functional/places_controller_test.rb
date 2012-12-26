@@ -18,7 +18,7 @@ class PlacesControllerTest < ActionController::TestCase
 
   test "should create place" do
     assert_difference('Place.count') do
-      post :create, place: { id: @place.id, name: @place.name }
+      post :create, place: { location: @place.location, name: @place.name, ot_rid: @place.ot_rid }
     end
 
     assert_response 201
@@ -30,7 +30,7 @@ class PlacesControllerTest < ActionController::TestCase
   end
 
   test "should update place" do
-    put :update, id: @place, place: { id: @place.id, name: @place.name }
+    put :update, id: @place, place: { location: @place.location, name: @place.name, ot_rid: @place.ot_rid }
     assert_response 204
   end
 

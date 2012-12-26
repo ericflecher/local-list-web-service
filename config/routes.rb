@@ -1,13 +1,15 @@
 SavedList::Application.routes.draw do
 
   resources :places, except: :edit
+  resources :saved_places, except: :edit
   resources :users, except: :edit
   
   # For catching OPTIONS and sending 200 status so that request will be resent (CORS)
   match '*all' => 'application#cors_preflight_check', :constraints => { :method => 'OPTIONS' }
   
   # For geo Google Places WS
-  match '/geo' => 'places#geo'
+  # match '/geo' => 'saved_places#geo'
+  match '/places/get' => 'places#get', :constraints => { :method => 'POST' }
   
   # For Open Table HTML parser
   match '/otp' => 'places#ot_parser' #, :constraints => { :method => 'POST' }

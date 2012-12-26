@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   attr_accessible :email, :token, :password, :use_password
   validates_presence_of :email
   validates_uniqueness_of :email
-  has_many :places
+  has_many :saved_places
   
   def encrypt_password
     if password.present?

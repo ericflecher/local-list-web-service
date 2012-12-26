@@ -1,119 +1,74 @@
 class PlacesController < ApplicationController
-  
-  def places_create_update
-    #puts '>>>>> places_create_update'
-    puts '>>>>> email'
-    puts params[:email]
-    
-    if params[:email]
-      puts '>>>>> find user (or create) by email'
-      user = User.find_or_create_by_email(params[:email])
-      puts '>>>>> user'
-      puts user.inspect
-      
-      user_id = user.id
-      
-      puts '>>>>> user_id'
-      puts user_id
-      
-      # if !params.has_key?(:archived) || !params[:archived]
-        # archived = false
-      # end
-      
-      {:user_id => user_id, :uid => params[:uid], :name => params[:name], :ref => params[:ref], :saved => params[:saved], :come_back => params[:come_back], :archived => false}
-    end
-  end
-  
   # GET /places
   # GET /places.json
   def index
-    puts '>>> index'
-    puts '>>> params[:archived]'
-    puts params[:archived]
-    
-    if params.has_key?(:archived) && params[:archived] == 'true'
-      puts '>>> archived is true'
-      @places = Place.all
-    else
-      puts '>>> archived is not true, display only archived != true'
-      @places = Place.where('archived != ? OR archived IS NULL', true)
-    end
-    
-    render json: @places
+    places = Place.all
+
+    render json: places
   end
 
   # GET /places/1
   # GET /places/1.json
   def show
-    @place = Place.find(params[:id])
+    place = Place.find(params[:id])
 
-    render json: @place
+    render json: place
   end
 
   # GET /places/new
   # GET /places/new.json
   def new
-    @place = Place.new
+    place = Place.new
 
-    render json: @place
+    render json: place
   end
 
   # POST /places
   # POST /places.json
   def create
-    puts '>>> params:'
-    puts params.inspect
-    @place = Place.new(places_create_update)
-    puts '>>> place:'
-    puts @place.inspect
+    place = Place.new(params[:place])
 
-    if @place.save
-      render json: @place, status: :created, location: @place
+    if place.save
+      render json: place, status: :created, location: place
     else
-      render json: @place.errors, status: :unprocessable_entity
+      render json: place.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /places/1
   # PATCH/PUT /places/1.json
   def update
-    @place = Place.find(params[:id])
+    place = Place.find(params[:id])
 
-    #if @place.update_attributes(params[:place])
-    if @place.update_attributes(places_create_update)
+    if place.update_attributes(params[:place])
       head :no_content
     else
-      render json: @place.errors, status: :unprocessable_entity
+      render json: place.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /places/1
   # DELETE /places/1.json
   def destroy
-    puts '>>> index'
-    @place = Place.find(params[:id])
-    
-    puts '>>> params[:permanent]'
-    puts params[:permanent]
-    
-    if params.has_key?(:permanent) && params[:permanent] == 'true'
-      puts '>>> permanent is true'
-      @place.destroy
-    else
-      @place.archived = true
-      @place.save
-    end
+    place = Place.find(params[:id])
+    place.destroy
 
     head :no_content
   end
   
-  # POST /geo
-  # GET /geo
-  # *** ? /geo
-  def geo
+  
+  
+  require 'nokogiri'
+  require 'open-uri'
+  require 'httparty'
+  require 'ap'
+  
+  # POST /places/get
+  # POST /places/get.json
+  def get
     puts '>>> GEO WS'
-    #puts 'Lat Lng'
-    #puts params['latlng']
+    puts 'Lat Lng'
+    ap params['latlng']
     
     if params.has_key?('latlng')
       places_url = URI.encode('https://maps.googleapis.com/maps/api/place/search/json?parameters?&location=' + params['latlng'] + '&rankby=distance&types=bar|restaurant|cafe|food&language=en&sensor=true&key=AIzaSyDfvlLdmPj5jPMYy54KLcmkgvD68oFt5fM')
@@ -125,24 +80,60 @@ class PlacesController < ApplicationController
       results = []
       
       response.each do |item|
-        #puts item.inspect
+        # ap item
+        
         result_new = Hash.new
         
-        item.each do |a|
-          #puts a[0]
-          if a[0] == "name" || a[0] == "formatted_address" || a[0] == "vicinity"
-            #puts "key: " + a[0] + " val: " + a[1]
-            result_new[a[0]] = a[1]
-          elsif a[0] == "id"
-            result_new["uid"] = a[1]
+        item.each do |attrib|
+          # puts attrib[0]
+          if attrib[0] == "name" # || attrib[0] == "formatted_address" || attrib[0] == "vicinity"
+            # puts "key: " + attrib[0] + " val: " + attrib[1]
+            result_new[attrib[0]] = attrib[1]
+          elsif attrib[0] == "id"
+            result_new["uid"] = attrib[1]
           end
         end
+        
+        # Create new place if it does not exist
+        place = Place.find_by_uid(result_new["uid"])
+        
+        if !place
+          puts '>>> place not in DB'
+          place = Place.new
+          place.uid = result_new["uid"]
+          place.name = result_new["name"]
+          # may need to change vicinity to formatted_address, or account for both?
+          place.location = result_new["vicinity"]
+          # loc.slice(loc.index(", ")+", ".length..loc.length)
+          
+          city_const = ", "
+          
+          index = place.location.rindex(city_const)
+          if index
+            place.city = place.location.slice(index + city_const.length..place.location.length)
+          else
+            place.city = place.location
+          end
+          
+          # Save the place to DB
+          place.save
+          
+          # # check if exists in OT
+          # place.ot_rid = ot_rid(place)
+          # 
+          # puts '>>> ot_rid:'
+          # ap place.ot_rid
+        end
+        
+        # if exists in OT then send data to front end
+        result_new["ot"] = place.ot_rid
         
         results << result_new
       end
       
-      #puts 'results:'
-      #puts results.inspect
+      puts '>>> results:'
+      # puts results
+      # ap results
       
       payload = Hash.new
       
@@ -153,24 +144,18 @@ class PlacesController < ApplicationController
     end
   end
   
-  require 'nokogiri'
-  require 'open-uri'
-  require 'httparty'
-  require 'ap'
-  # GET /otp (TEMPORARY)
-  # POST /otp
-  # POST /otp.json
-  def ot_parser
-    
+  
+  
+  # GET /ot_exists (TEMPORARY)
+  # POST /ot_exists
+  # POST /ot_exists.json
+  def ot_rid (place)
     # check for params
-    puts ">>> PARAMS:"
-    puts params
+    puts ">>> PLACE:"
+    ap place
     
-    # Init times array
-    response = {}
-    puts '>>> has params check here'
-    if params.has_key?(:r) && params.has_key?(:c) && params.has_key?(:s) && params.has_key?(:d)
-      # >>> Step 1 - get Restaurant ID
+    if place.name && place.location
+      # Get Restaurant ID
       
       # constants for google search url
       base_url = 'https://www.googleapis.com/customsearch/v1'
@@ -180,7 +165,7 @@ class PlacesController < ApplicationController
       # vars for google search url
       
       # query is restaurant and city
-      q = params[:r] + " " + params[:c]
+      q = place.name + " " + place.city
       # q = 'rise sushi chicago'
       # q = 'shaws chicago'
       type = 'json'
@@ -204,9 +189,7 @@ class PlacesController < ApplicationController
       # ap results
       
       if results
-        
         rid_const = 'rid='
-        
         ot_url = results[0]["link"]
         
         results.each do |result|
@@ -222,18 +205,15 @@ class PlacesController < ApplicationController
         # Check if the link has rid in it
         index = ot_url.index(rid_const)
         
-        puts '>>> index of rid'
-        ap index
+        # puts '>>> index of rid'
+        # ap index
+        
         rid = nil
+        
         if index
           # get the rid
           rid = ot_url.slice(index+rid_const.length..ot_url.length)
-          puts '>>> rid'
-          ap rid
         end
-        
-        # Test incase rid is not the last param
-        # ot_url += "&test=blah&r=fake"
         
         puts '>>> ot_url:'
         ap ot_url
@@ -241,51 +221,81 @@ class PlacesController < ApplicationController
         puts '>>> rid:'
         ap rid
         
-        # >>> Step 2 - get Times
-        
-        # http://m.opentable.com/search/results?Date=2012-12-19T13%3A35%3A00&PartySize=2&RestaurantID=47
-        base_url = 'http://m.opentable.com'
-        base_search_url = base_url + '/search/results'
-        party_size = params[:s]
-        # date_time = '2013-01-11T20:00:00'
-        date = params[:d]
-        time = params[:t]
-        query = '?' + 'Date=' + (CGI::escape date) + '&TimeInvariantCulture=' + (CGI::escape time) + '&PartySize=' + (CGI::escape party_size) + '&RestaurantID=' + rid
-        url = base_search_url + query
-        
-        puts '>>> open table url:'
-        ap url
-        
-        # Get a Nokogiri::HTML::Document for the page we’re interested in...
-        doc = Nokogiri::HTML(open(url))
-        
-        # times results array
-        times = []
-        
-        # Search for nodes by css
-        doc.css('ul#ulSlots li.ti a').each do |link|
-        # doc.css('#ulSlots li a').each do |link|
-          time = {}
-          time["url"] = base_url + link['href']
-          time["time"] = link.content.strip
-        
-          times << time
-        end
-        
-        if times.empty?
-          response[:error] = { :exists => "true", :error => "true", :url => url }
-        else
-          response[:error] = { :exists => "true", :error => "false", :url => url }
-          response[:times] = times
-        end
-      else
-        response[:error] = { :exists => "false" }
+        # return OT RID
+        return rid
       end
     end
     
-    # puts '>>> response:'
-    puts response.inspect
+    return false
+  end
+  
+  def ot_parser
+    # check for params
+    puts ">>> PARAMS:"
+    ap params
+    
+    # Init times array
+    response = {}
+    # puts '>>> has params check here'
+    if params.has_key?(:uid) && params.has_key?(:s) && params.has_key?(:d) && params.has_key?(:t)
+      place = Place.find_by_uid(params[:uid])
+    end
+    
+    puts '>>> place:'
+    ap place
+    
+    # See if exists in OT / get Restuarant ID
+    if place && place.ot_rid.nil?
+      puts '>>> See if exists in OT'
+      place.ot_rid = ot_rid(place)
+      place.save!
+    end
+    
+    if place && place.ot_rid && place.ot_rid != "f"
+      # >>> Step 2 - get Times
+      # http://m.opentable.com/search/results?Date=2012-12-19T00%3A00%3A00&TimeInvariantCulture=0001-01-01T19%3A30%3A00&PartySize=2&RestaurantID=47
+      base_url = 'http://m.opentable.com'
+      base_search_url = base_url + '/search/results'
+      party_size = params[:s]
+      date = params[:d]
+      time = params[:t]
+      query = '?' + 'Date=' + (CGI::escape date) + '&TimeInvariantCulture=' + (CGI::escape time) + '&PartySize=' + (CGI::escape party_size) + '&RestaurantID=' + place.ot_rid
+      url = base_search_url + query
+      
+      puts '>>> open table url:'
+      ap url
+      
+      # Get a Nokogiri::HTML::Document for the page we’re interested in...
+      doc = Nokogiri::HTML(open(url))
+      
+      # times results array
+      times = []
+      
+      # Search for nodes by css
+      doc.css('ul#ulSlots li.ti a').each do |link|
+      # doc.css('#ulSlots li a').each do |link|
+        time = {}
+        time["url"] = base_url + link['href']
+        time["time"] = link.content.strip
+        
+        times << time
+      end
+      
+      if times.empty?
+        response[:error] = { :exists => "true", :error => "true", :url => url }
+      else
+        response[:error] = { :exists => "true", :error => "false", :url => url }
+        response[:times] = times
+      end
+    else
+      response[:error] = { :exists => "false" }
+    end
+    
+    puts '>>> response:'
+    ap response
     
     render json: response
   end
+  
+  
 end

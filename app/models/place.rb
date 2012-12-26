@@ -1,4 +1,3 @@
 class Place < ActiveRecord::Base
-  attr_accessible :id, :user_id, :uid, :name, :ref, :saved, :come_back, :archived
-  belongs_to :user
+  attr_accessible :uid, :name, :city, :location, :ot_rid
 end
