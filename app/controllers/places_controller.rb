@@ -86,7 +86,7 @@ class PlacesController < ApplicationController
         
         item.each do |attrib|
           # puts attrib[0]
-          if attrib[0] == "name" # || attrib[0] == "formatted_address" || attrib[0] == "vicinity"
+          if attrib[0] == "name" || attrib[0] == "vicinity" # || attrib[0] == "formatted_address"
             # puts "key: " + attrib[0] + " val: " + attrib[1]
             result_new[attrib[0]] = attrib[1]
           elsif attrib[0] == "id"
