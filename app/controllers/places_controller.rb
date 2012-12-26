@@ -106,6 +106,10 @@ class PlacesController < ApplicationController
           place.location = result_new["vicinity"]
           # loc.slice(loc.index(", ")+", ".length..loc.length)
           
+          ap result_new
+          ap place.location
+          ap place
+          
           city_const = ", "
           
           index = place.location.rindex(city_const)
