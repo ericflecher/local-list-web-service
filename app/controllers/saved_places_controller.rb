@@ -27,16 +27,23 @@ class SavedPlacesController < ApplicationController
   # GET /places
   # GET /places.json
   def index
-    puts '>>> index'
-    puts '>>> params[:archived]'
-    puts params[:archived]
+    # puts '>>> index'
+    # puts '>>> params[:archived]'
+    # puts params[:archived]
+
+    # # Old index, gets everyones saved places, including archived
+    # if params.has_key?(:archived) && params[:archived] == 'true'
+    #   puts '>>> archived is true'
+    #   @places = SavedPlace.all
+    # else
+    #   puts '>>> archived is not true, display only archived != true'
+    #   @places = SavedPlace.where('archived != ? OR archived IS NULL', true)
+    # end
     
-    if params.has_key?(:archived) && params[:archived] == 'true'
-      puts '>>> archived is true'
-      @places = SavedPlace.all
+    if params.has_key?(:user_id) && params[:user_id]
+      @places = SavedPlace.find_by_user_id(params[:user_id])
     else
-      puts '>>> archived is not true, display only archived != true'
-      @places = SavedPlace.where('archived != ? OR archived IS NULL', true)
+      @places = nil
     end
     
     render json: @places

@@ -133,15 +133,18 @@ class PlacesController < ApplicationController
         result_new["ot"] = place.ot_rid
         
         results << result_new
+        
+        payload = Hash.new
+        payload[:success] = true
       end
       
       puts '>>> results:'
       # puts results
       # ap results
       
-      payload = Hash.new
+      payload ||= Hash.new
+      payload[:success] ||= false
       
-      payload[:success] = true
       payload[:results] = results
       
       render json: payload
@@ -150,9 +153,6 @@ class PlacesController < ApplicationController
   
   
   
-  # GET /ot_exists (TEMPORARY)
-  # POST /ot_exists
-  # POST /ot_exists.json
   def ot_rid (place)
     # check for params
     puts ">>> PLACE:"
@@ -233,6 +233,11 @@ class PlacesController < ApplicationController
     return false
   end
   
+  
+  
+  # GET /otp (TEMPORARY)
+  # POST /otp
+  # POST /otp.json
   def ot_parser
     # check for params
     puts ">>> PARAMS:"
