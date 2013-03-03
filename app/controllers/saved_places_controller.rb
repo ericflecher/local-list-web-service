@@ -41,7 +41,7 @@ class SavedPlacesController < ApplicationController
     # end
     
     if params.has_key?(:user_id) && params[:user_id]
-      @places = SavedPlace.find_by_user_id(params[:user_id])
+      @places = SavedPlace.find_all_by_user_id(params[:user_id])
     else
       @places = nil
     end
