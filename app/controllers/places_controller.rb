@@ -348,8 +348,8 @@ class PlacesController < ApplicationController
       # HTTParty hard the above path
       yelp_response = HTTParty.get(yelp_url, :format => :json)["businesses"][0]
       
-      puts '>>>> yelp response'
-      ap yelp_response
+      # puts '>>>> yelp response'
+      # ap yelp_response
       
       if yelp_response
         # puts '>>> categories'
