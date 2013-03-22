@@ -86,11 +86,11 @@ class PlacesController < ApplicationController
         
         item.each do |attrib|
           # puts attrib[0]
-          if attrib[0] == "name" || attrib[0] == "vicinity" # || attrib[0] == "formatted_address"
+          if attrib[0] == "name" || attrib[0] == "reference" # || attrib[0] == "vicinity"
             # puts "key: " + attrib[0] + " val: " + attrib[1]
             result_new[attrib[0]] = attrib[1]
-          elsif attrib[0] == "id"
-            result_new["uid"] = attrib[1]
+          # elsif attrib[0] == "id"
+          #   result_new["uid"] = attrib[1]
           end
         end
         
@@ -100,24 +100,26 @@ class PlacesController < ApplicationController
         if !place
           puts '>>> place not in DB'
           place = Place.new
-          place.uid = result_new["uid"]
+          
+          ### !!! NOTE: taking uid, location, city out since its not used yet (Open API potentially)
+          
+          # place.uid = result_new["uid"]
           place.name = result_new["name"]
-          # may need to change vicinity to formatted_address, or account for both?
-          place.location = result_new["vicinity"]
-          # loc.slice(loc.index(", ")+", ".length..loc.length)
+          # place.location = result_new["vicinity"]
           
           ap result_new
-          ap place.location
+          # ap place.location
           ap place
-          
-          city_const = ", "
-          
-          index = place.location.rindex(city_const)
-          if index
-            place.city = place.location.slice(index + city_const.length..place.location.length)
-          else
-            place.city = place.location
-          end
+
+          # # Taking city and location out, not used currently
+          # city_const = ", "
+          # 
+          # index = place.location.rindex(city_const)
+          # if index
+          #   place.city = place.location.slice(index + city_const.length..place.location.length)
+          # else
+          #   place.city = place.location
+          # end
           
           # Save the place to DB
           place.save
@@ -129,21 +131,18 @@ class PlacesController < ApplicationController
           # ap place.ot_rid
         end
         
-        # if exists in OT then send data to front end
-        result_new["ot"] = place.ot_rid
+        # # if exists in OT then send data to front end
+        # result_new["ot"] = place.ot_rid
         
         results << result_new
-        
-        payload = Hash.new
-        payload[:success] = true
       end
       
-      puts '>>> results:'
+      # puts '>>> results:'
       # puts results
       # ap results
       
-      payload ||= Hash.new
-      payload[:success] ||= false
+      payload = Hash.new
+      payload[:success] = !results.empty?
       
       payload[:results] = results
       
@@ -304,6 +303,84 @@ class PlacesController < ApplicationController
     ap response
     
     render json: response
+  end
+  
+  
+  # # For Yelp v2
+  # require 'oauth'
+  
+  # POST /otp
+  # POST /otp.json
+  def yelp
+    
+    if params.has_key?('reference')
+      # Call Google Places to get phone number
+      places_url = URI.encode('https://maps.googleapis.com/maps/api/place/details/json?reference=' + params['reference'] + '&sensor=true&key=AIzaSyDfvlLdmPj5jPMYy54KLcmkgvD68oFt5fM')
+      places_response = HTTParty.get(places_url)['result']
+      
+      # puts '>>> google details response'
+      # ap response
+      
+      phone_number = places_response['formatted_phone_number']
+      phone_digits = places_response['international_phone_number'].delete("+ ()-")
+      
+      # # Yelp v2
+      # consumer_key = 'yQOQxtNtpLyPOtPVeOFiuQ'
+      # consumer_secret = 'wbGrz176uFBeQZazJx_OkYkAng8'
+      # token = '1St_-kOKX8rKJYf33hO-MB0qdVKJJcQm'
+      # token_secret = 'X5l9MQ9IBRXrr5eb2jCUU6r-GZM'
+      # 
+      # api_host = 'api.yelp.com'
+      # 
+      # consumer = OAuth::Consumer.new(consumer_key, consumer_secret, {:site => "http://#{api_host}"})
+      # access_token = OAuth::AccessToken.new(consumer, token, token_secret)
+      #
+      # p access_token.get(path).body
+      
+      categories = []
+      neighborhoods = []
+      
+      api_host = 'api.yelp.com'
+      ywsid = 'QyGURgxJPFWajTpsNPJeJg'
+      
+      yelp_url = "http://#{api_host}" + '/phone_search?phone=' + phone_digits + '&ywsid=' + ywsid
+      
+      # HTTParty hard the above path
+      yelp_response = HTTParty.get(yelp_url, :format => :json)["businesses"][0]
+      
+      puts '>>>> yelp response'
+      ap yelp_response
+      
+      if yelp_response
+        # puts '>>> categories'
+        # ap yelp_response["categories"]
+        
+        yelp_response["categories"].each do |category|
+          categories << category["name"]
+        end
+        
+        yelp_response["neighborhoods"].each do |neighborhood|
+          neighborhoods << neighborhood["name"]
+        end
+        
+        address = yelp_response["address1"]
+        
+        results = Hash.new
+        results["address"] = address
+        results["phone"] = phone_number
+        results["categories"] = categories
+        results["neighborhoods"] = neighborhoods
+        
+        response = Hash.new
+        response[:success] = true
+        response[:results] = results
+      else
+        response = Hash.new
+        response[:success] = false
+      end
+      
+      render json: response
+    end
   end
   
   

@@ -11,6 +11,9 @@ SavedList::Application.routes.draw do
   # match '/geo' => 'saved_places#geo'
   match '/places/get' => 'places#get', :constraints => { :method => 'POST' }
   
+  # For Yelp
+  match '/places/yelp' => 'places#yelp', :constraints => { :method => 'POST' }
+  
   # For Open Table HTML parser
   match '/otp' => 'places#ot_parser' #, :constraints => { :method => 'POST' }
   
