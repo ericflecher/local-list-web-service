@@ -21,3 +21,6 @@ gem 'bcrypt-ruby', :require => 'bcrypt'
 # GEMS SPECIFIC TO OPEN_TABLE_PARSER:
 gem 'nokogiri'
 gem 'awesome_print'
+
+# Gems for Yelp v2 API call
+gem 'oauth'

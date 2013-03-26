@@ -57,8 +57,7 @@ class PlacesController < ApplicationController
   end
   
   
-  
-  require 'nokogiri'
+  require 'oauth'
   require 'open-uri'
   require 'httparty'
   require 'ap'
@@ -71,70 +70,92 @@ class PlacesController < ApplicationController
     ap params['latlng']
     
     if params.has_key?('latlng')
-      places_url = URI.encode('https://maps.googleapis.com/maps/api/place/search/json?parameters?&location=' + params['latlng'] + '&rankby=distance&types=bar|restaurant|cafe|food&language=en&sensor=true&key=AIzaSyDfvlLdmPj5jPMYy54KLcmkgvD68oFt5fM')
-      #puts places_url
-      response = HTTParty.get(places_url)['results']
       
-      #puts 'response.each do |item|:'
+      consumer_key = 'yQOQxtNtpLyPOtPVeOFiuQ'
+      consumer_secret = 'wbGrz176uFBeQZazJx_OkYkAng8'
+      token = '1St_-kOKX8rKJYf33hO-MB0qdVKJJcQm'
+      token_secret = 'X5l9MQ9IBRXrr5eb2jCUU6r-GZM'
+      
+      api_host = 'api.yelp.com'
+      
+      consumer = OAuth::Consumer.new(consumer_key, consumer_secret, {:site => "http://#{api_host}"})
+      access_token = OAuth::AccessToken.new(consumer, token, token_secret)
+      
+      path = "/v2/search?sort=1&ll=" + params['latlng'] + "&limit=10&category_filter=restaurants"
+      
+      response = JSON.parse(access_token.get(path).body)["businesses"]
+      
+      # ap response
+      ap response[0]
+      
+      # # Google Places Nearby Search API
+      # places_url = URI.encode('https://maps.googleapis.com/maps/api/place/search/json?parameters?&location=' + params['latlng'] + '&rankby=distance&types=bar|restaurant|cafe|food&language=en&sensor=true&key=AIzaSyDfvlLdmPj5jPMYy54KLcmkgvD68oFt5fM')
+      # #puts places_url
+      # response = HTTParty.get(places_url)['results']
       
       results = []
       
       response.each do |item|
         # ap item
         
-        result_new = Hash.new
+        result = Hash.new
         
-        item.each do |attrib|
-          # puts attrib[0]
-          if attrib[0] == "name" || attrib[0] == "reference" # || attrib[0] == "vicinity"
-            # puts "key: " + attrib[0] + " val: " + attrib[1]
-            result_new[attrib[0]] = attrib[1]
-          # elsif attrib[0] == "id"
-          #   result_new["uid"] = attrib[1]
-          end
+        result["name"] = item["name"]
+        result["address"] = item["location"]["address"][0]
+        result["phone"] = item["display_phone"]
+        result["categories"] = []
+        
+        item["categories"].each do |category|
+          result["categories"] << category[0]
         end
         
+        result["neighborhoods"] = []
+        
+        item["location"]["neighborhoods"].each do |neighborhood|
+          result["neighborhoods"] << neighborhood
+        end
+        
+        # # CANT SAVE TO DB BECAUSE YELP DATA
         # Create new place if it does not exist
-        place = Place.find_by_uid(result_new["uid"])
-        
-        if !place
-          puts '>>> place not in DB'
-          place = Place.new
-          
-          ### !!! NOTE: taking uid, location, city out since its not used yet (Open API potentially)
-          
-          # place.uid = result_new["uid"]
-          place.name = result_new["name"]
-          # place.location = result_new["vicinity"]
-          
-          ap result_new
-          # ap place.location
-          ap place
-
-          # # Taking city and location out, not used currently
-          # city_const = ", "
-          # 
-          # index = place.location.rindex(city_const)
-          # if index
-          #   place.city = place.location.slice(index + city_const.length..place.location.length)
-          # else
-          #   place.city = place.location
-          # end
-          
-          # Save the place to DB
-          place.save
-          
-          # # check if exists in OT
-          # place.ot_rid = ot_rid(place)
-          # 
-          # puts '>>> ot_rid:'
-          # ap place.ot_rid
-        end
+        # place = Place.find_by_uid(result["uid"])
+        # if !place
+        #   puts '>>> place not in DB'
+        #   place = Place.new
+        #   
+        #   ### !!! NOTE: taking uid, location, city out since its not used yet (Open API potentially)
+        #   
+        #   # place.uid = result["uid"]
+        #   place.name = result["name"]
+        #   # place.location = result["vicinity"]
+        #   
+        #   ap result
+        #   # ap place.location
+        #   ap place
+        #   
+        #   # # Taking city and location out, not used currently
+        #   # city_const = ", "
+        #   # 
+        #   # index = place.location.rindex(city_const)
+        #   # if index
+        #   #   place.city = place.location.slice(index + city_const.length..place.location.length)
+        #   # else
+        #   #   place.city = place.location
+        #   # end
+        #   
+        #   # Save the place to DB
+        #   place.save
+        #   
+        #   # # check if exists in OT
+        #   # place.ot_rid = ot_rid(place)
+        #   # 
+        #   # puts '>>> ot_rid:'
+        #   # ap place.ot_rid
+        # end
         
         # # if exists in OT then send data to front end
-        # result_new["ot"] = place.ot_rid
+        # result["ot"] = place.ot_rid
         
-        results << result_new
+        results << result
       end
       
       # puts '>>> results:'
@@ -234,6 +255,8 @@ class PlacesController < ApplicationController
   
   
   
+  require 'nokogiri'
+  
   # GET /otp (TEMPORARY)
   # POST /otp
   # POST /otp.json
@@ -306,8 +329,6 @@ class PlacesController < ApplicationController
   end
   
   
-  # # For Yelp v2
-  # require 'oauth'
   
   # POST /otp
   # POST /otp.json
@@ -323,19 +344,6 @@ class PlacesController < ApplicationController
       
       phone_number = places_response['formatted_phone_number']
       phone_digits = places_response['international_phone_number'].delete("+ ()-")
-      
-      # # Yelp v2
-      # consumer_key = 'yQOQxtNtpLyPOtPVeOFiuQ'
-      # consumer_secret = 'wbGrz176uFBeQZazJx_OkYkAng8'
-      # token = '1St_-kOKX8rKJYf33hO-MB0qdVKJJcQm'
-      # token_secret = 'X5l9MQ9IBRXrr5eb2jCUU6r-GZM'
-      # 
-      # api_host = 'api.yelp.com'
-      # 
-      # consumer = OAuth::Consumer.new(consumer_key, consumer_secret, {:site => "http://#{api_host}"})
-      # access_token = OAuth::AccessToken.new(consumer, token, token_secret)
-      #
-      # p access_token.get(path).body
       
       categories = []
       neighborhoods = []
