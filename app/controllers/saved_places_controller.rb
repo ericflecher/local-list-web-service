@@ -6,47 +6,30 @@ class SavedPlacesController < ApplicationController
     puts params[:email]
     
     if params[:email]
-      puts '>>>>> find user (or create) by email'
-      user = User.find_or_create_by_email(params[:email])
-      puts '>>>>> user'
-      puts user.inspect
+      user_id = User.find_or_create_by_email(params[:email]).id
       
-      user_id = user.id
-      
-      puts '>>>>> user_id'
-      puts user_id
-      
-      # if !params.has_key?(:archived) || !params[:archived]
-        # archived = false
-      # end
-      
-      {:user_id => user_id, :uid => params[:uid], :name => params[:name], :ref => params[:ref], :saved => params[:saved], :come_back => params[:come_back], :archived => false}
+      { :user_id => user_id, :yelp_id => params[:yelp_id], :come_back => params[:come_back] }
     end
   end
   
   # GET /places
   # GET /places.json
   def index
-    # puts '>>> index'
-    # puts '>>> params[:archived]'
-    # puts params[:archived]
-
-    # # Old index, gets everyones saved places, including archived
-    # if params.has_key?(:archived) && params[:archived] == 'true'
-    #   puts '>>> archived is true'
-    #   @places = SavedPlace.all
-    # else
-    #   puts '>>> archived is not true, display only archived != true'
-    #   @places = SavedPlace.where('archived != ? OR archived IS NULL', true)
-    # end
-    
     if params.has_key?(:user_id) && params[:user_id]
       @places = SavedPlace.find_all_by_user_id(params[:user_id])
+      
+      results = []
+      
+      @places.each do |place|
+        # Call Yelp v2 business api
+        results << yelp_business(place["yelp_id"])
+      end
+      
     else
-      @places = nil
+      results = nil
     end
     
-    render json: @places
+    render json: results
   end
 
   # GET /places/1
@@ -70,6 +53,9 @@ class SavedPlacesController < ApplicationController
   def create
     puts '>>> params:'
     puts params.inspect
+    
+    params[:come_back] = false
+    
     @place = SavedPlace.new(places_create_update)
     puts '>>> place:'
     puts @place.inspect
@@ -86,7 +72,6 @@ class SavedPlacesController < ApplicationController
   def update
     @place = SavedPlace.find(params[:id])
 
-    #if @place.update_attributes(params[:place])
     if @place.update_attributes(places_create_update)
       head :no_content
     else
@@ -100,17 +85,45 @@ class SavedPlacesController < ApplicationController
     puts '>>> index'
     @place = SavedPlace.find(params[:id])
     
-    puts '>>> params[:permanent]'
-    puts params[:permanent]
-    
-    if params.has_key?(:permanent) && params[:permanent] == 'true'
-      puts '>>> permanent is true'
-      @place.destroy
-    else
-      @place.archived = true
-      @place.save
-    end
+    @place.destroy
 
     head :no_content
+  end
+  
+  require 'oauth'
+  
+  def yelp_business(yelp_id)
+    consumer_key = 'yQOQxtNtpLyPOtPVeOFiuQ'
+    consumer_secret = 'wbGrz176uFBeQZazJx_OkYkAng8'
+    token = '1St_-kOKX8rKJYf33hO-MB0qdVKJJcQm'
+    token_secret = 'X5l9MQ9IBRXrr5eb2jCUU6r-GZM'
+    
+    api_host = 'api.yelp.com'
+    
+    consumer = OAuth::Consumer.new(consumer_key, consumer_secret, {:site => "http://#{api_host}"})
+    access_token = OAuth::AccessToken.new(consumer, token, token_secret)
+    
+    path = "/v2/business/" + yelp_id
+    
+    item = JSON.parse(access_token.get(path).body)
+    
+    result = Hash.new
+    result["yelp_id"] = item["id"]
+    result["name"] = item["name"]
+    result["address"] = item["location"]["address"][0]
+    result["phone"] = item["display_phone"]
+    result["categories"] = []
+    
+    item["categories"].each do |category|
+      result["categories"] << category[0]
+    end
+    
+    result["neighborhoods"] = []
+    
+    item["location"]["neighborhoods"].each do |neighborhood|
+      result["neighborhoods"] << neighborhood
+    end
+    
+    result
   end
 end

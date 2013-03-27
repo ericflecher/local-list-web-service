@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121226195235) do
+ActiveRecord::Schema.define(:version => 20130326233335) do
 
   create_table "places", :force => true do |t|
     t.string   "name"
@@ -24,15 +24,11 @@ ActiveRecord::Schema.define(:version => 20121226195235) do
   end
 
   create_table "saved_places", :force => true do |t|
-    t.string   "name"
-    t.string   "ref"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-    t.boolean  "saved"
     t.boolean  "come_back"
-    t.string   "uid"
     t.integer  "user_id"
-    t.boolean  "archived"
+    t.string   "yelp_id"
   end
 
   create_table "users", :force => true do |t|

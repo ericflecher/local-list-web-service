@@ -100,6 +100,7 @@ class PlacesController < ApplicationController
         
         result = Hash.new
         
+        result["yelp_id"] = item["id"]
         result["name"] = item["name"]
         result["address"] = item["location"]["address"][0]
         result["phone"] = item["display_phone"]
