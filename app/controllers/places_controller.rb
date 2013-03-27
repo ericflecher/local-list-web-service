@@ -86,7 +86,7 @@ class PlacesController < ApplicationController
       response = JSON.parse(access_token.get(path).body)["businesses"]
       
       # ap response
-      ap response[0]
+      # ap response[0]
       
       # # Google Places Nearby Search API
       # places_url = URI.encode('https://maps.googleapis.com/maps/api/place/search/json?parameters?&location=' + params['latlng'] + '&rankby=distance&types=bar|restaurant|cafe|food&language=en&sensor=true&key=AIzaSyDfvlLdmPj5jPMYy54KLcmkgvD68oFt5fM')
