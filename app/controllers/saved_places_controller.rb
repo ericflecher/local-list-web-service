@@ -22,8 +22,10 @@ class SavedPlacesController < ApplicationController
       
       @places.each do |place|
         # Call Yelp v2 business api
+        ap place["yelp_id"]
         result = yelp_business(place["yelp_id"])
         result["id"] = place.id
+        result["come_back"] = place.come_back
         
         results << result
       end
