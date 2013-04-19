@@ -81,7 +81,12 @@ class PlacesController < ApplicationController
       consumer = OAuth::Consumer.new(consumer_key, consumer_secret, {:site => "http://#{api_host}"})
       access_token = OAuth::AccessToken.new(consumer, token, token_secret)
       
-      path = "/v2/search?sort=1&ll=" + params['latlng'] + "&limit=10&category_filter=restaurants"
+      limit = 10
+      offset = params['p'].to_i * limit
+      
+      path = "/v2/search?sort=1&ll=" + params['latlng'] + "&limit=" + limit.to_s + "&offset=" + offset.to_s + "&category_filter=restaurants"
+      
+      ap path
       
       response = JSON.parse(access_token.get(path).body)["businesses"]
       
