@@ -84,23 +84,27 @@ class PlacesController < ApplicationController
       limit = 10
       offset = params['p'].to_i * limit
       
-      path = "/v2/search?sort=1&ll=" + params['latlng'] + "&limit=" + limit.to_s + "&offset=" + offset.to_s + "&category_filter=restaurants"
+      # path = "/v2/search?sort=1&ll=" + params['latlng'] + "&limit=" + limit.to_s + "&offset=" + offset.to_s + "&category_filter=restaurants"
+      path = "/v2/search?sort=1&ll=" + params['latlng'] + "&limit=" + limit.to_s + "&category_filter=restaurants"
       
       ap path
       
-      response = JSON.parse(access_token.get(path).body)["businesses"]
+      response = JSON.parse(access_token.get(path).body)
       
       # ap response
-      # ap response[0]
       
-      # # Google Places Nearby Search API
-      # places_url = URI.encode('https://maps.googleapis.com/maps/api/place/search/json?parameters?&location=' + params['latlng'] + '&rankby=distance&types=bar|restaurant|cafe|food&language=en&sensor=true&key=AIzaSyDfvlLdmPj5jPMYy54KLcmkgvD68oFt5fM')
-      # #puts places_url
-      # response = HTTParty.get(places_url)['results']
+      if response["error"]
+        ap response["error"]
+        payload = Hash.new
+        payload[:success] = "fail"
+        payload[:error] = response["error"]["text"]
+        
+        render json: payload and return
+      end
       
       results = []
       
-      response.each do |item|
+      response["businesses"].each do |item|
         # ap item
         
         result = Hash.new
