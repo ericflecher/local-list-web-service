@@ -19,15 +19,45 @@ class SavedPlacesController < ApplicationController
       @places = SavedPlace.find_all_by_user_id(params[:user_id])
       
       results = []
+      error = nil
       
       @places.each do |place|
         # Call Yelp v2 business api
-        ap place["yelp_id"]
+        # ap place["yelp_id"]
+        
         result = yelp_business(place["yelp_id"])
+        
+        if result["error"]
+          # if not null set error
+          error ||= result["error"]
+          
+          # Create dummy result data
+          result = Hash.new
+          result["yelp_id"] = "restaurant-chicago"
+          result["name"] = "Dummy Restaurant"
+          result["address"] = "123 Chicago Ave"
+          result["phone"] = "(312) 555-5555"
+          result["categories"] = []
+          result["categories"] << "American"
+          result["categories"] << "Food"
+          result["neighborhoods"] = []
+          result["neighborhoods"] << "River North"
+        end
+        
         result["id"] = place.id
         result["come_back"] = place.come_back
         
         results << result
+      end
+      
+      if error
+        ap error
+        payload = Hash.new
+        payload[:success] = false
+        payload[:error] = error["text"]
+        payload[:results] = results
+        
+        render json: payload and return
       end
       
     else
@@ -111,6 +141,12 @@ class SavedPlacesController < ApplicationController
     path = "/v2/business/" + yelp_id
     
     item = JSON.parse(access_token.get(path).body)
+    
+    # ap item
+    
+    if item["error"]
+      return item
+    end
     
     result = Hash.new
     result["yelp_id"] = item["id"]

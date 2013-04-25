@@ -99,6 +99,39 @@ class PlacesController < ApplicationController
         payload[:success] = false
         payload[:error] = response["error"]["text"]
         
+        # Create dummy results data
+        results = []
+        result_r = Hash.new
+        result_r["yelp_id"] = "restaurant-chicago"
+        result_r["name"] = "Dummy Restaurant"
+        result_r["address"] = "123 Chicago Ave"
+        result_r["phone"] = "(312) 555-5555"
+        result_r["categories"] = []
+        result_r["categories"] << "American"
+        result_r["categories"] << "Food"
+        result_r["neighborhoods"] = []
+        result_r["neighborhoods"] << "River North"
+        results << result_r
+        result_b = Hash.new
+        result_b["yelp_id"] = "bar-chicago"
+        result_b["name"] = "Dummy Bar"
+        result_b["address"] = "555 Chicago Ave"
+        result_b["phone"] = "(312) 555-5555"
+        result_b["categories"] = []
+        result_b["categories"] << "Bar"
+        result_b["categories"] << "Sports Bar"
+        result_b["neighborhoods"] = []
+        result_b["neighborhoods"] << "River North"
+        results << result_b
+        results << result_r
+        results << result_r
+        results << result_r
+        results << result_b
+        results << result_r
+        results << result_b
+        results << result_r
+        payload[:results] = results
+        
         render json: payload and return
       end
       
