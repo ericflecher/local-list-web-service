@@ -96,7 +96,7 @@ class PlacesController < ApplicationController
       if response["error"]
         ap response["error"]
         payload = Hash.new
-        payload[:success] = "fail"
+        payload[:success] = false
         payload[:error] = response["error"]["text"]
         
         render json: payload and return
